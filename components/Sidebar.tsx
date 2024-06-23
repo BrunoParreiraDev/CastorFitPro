@@ -1,29 +1,43 @@
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
   return (
-    <div className="h-screen bg-gray-800 text-white w-52">
-      <div className="p-4">
-        <Link href="/" className="text-white text-lg font-semibold mx-auto">
+    <div className="h-screen bg-gray-800 text-white w-52 flex flex-col items-center sidebar">
+      <div className="pt-4">
+        <Link href="/" className="text-white text-lg font-semibold flex items-center">
+          <Image src="/logo.png" alt="Logo" className="mr-4" width={30} height={30}/>
           CastorFit Pro
         </Link>
       </div>
-      <nav className="mt-0">
+      <nav className="sidebar-items">
         <ul className="pl-6 pt-4">
           <li className="nav-item">
             <Link href="/" className="text-gray-300 hover:text-white w-screen h-full">
-              Home
+              Dashboard
             </Link>
           </li>
           <li className="nav-item">
-            <Link href="/about" className="text-gray-300 hover:text-white w-screen h-full">
-              About
+            <Link href="/resumo" className="text-gray-300 hover:text-white w-screen h-full">
+              Resumo
             </Link>
           </li>
           <li className="nav-item">
-            <Link href="/contact" className="text-gray-300 hover:text-white w-screen h-full">
-              Contact
+            <Link href="/treinos" className="text-gray-300 hover:text-white w-screen h-full">
+              Meus Treinos
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link href="/aulas" className="text-gray-300 hover:text-white w-screen h-full">
+              Video aulas
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link href="/progresso" className="text-gray-300 hover:text-white w-screen h-full">
+              Meu Progresso
             </Link>
           </li>
           {/* Add other sidebar items here */}

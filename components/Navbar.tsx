@@ -3,17 +3,17 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-800 p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex space-x-4">
+    <nav className="bg-gray-700 p-4">
+      <div className="container mx-auto flex justify-end">
+        <div className="flex space-x-4 items-center">
           <Link href="/" className="text-gray-300 hover:text-white">
-            Home
+            Início
           </Link>
-          <Link href="/about" className="text-gray-300 hover:text-white">
-            About
+          <Link href="/sobre" className="text-gray-300 hover:text-white">
+            Sobre
           </Link>
-          <Link href="/contact" className="text-gray-300 hover:text-white">
-            Contact
+          <Link href="/suport" className="text-gray-300 hover:text-white">
+            Suporte
           </Link>
           {/* Add other navbar items here */}
         </div>
