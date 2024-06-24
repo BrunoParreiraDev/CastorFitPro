@@ -6,8 +6,8 @@ export const getUserInfo = () => {
       profileImage: '/users/henrique_castor.jpg',
       privileges: 'admin',
     };
-    
   } catch (error) {
     console.log(error);
+    return { name: '', firstname: '', profileImage: '', privileges: '' };
   }
 };
