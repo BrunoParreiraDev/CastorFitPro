@@ -120,11 +120,11 @@ const Navbar = () => {
             className="overflow-hidden rounded-full"
           >
             <Image
-              src={user?.profileImage}
+              src={user.profileImage}
               width={36}
               height={36}
               alt="Avatar"
-              title={user?.name}
+              title={user.name}
               className="overflow-hidden rounded-full"
             />
           </Button>
