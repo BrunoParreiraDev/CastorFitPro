@@ -80,3 +80,18 @@
     @apply bg-slate-500;
   }
 }
+
+@media (max-width: 768px) {
+  .d-md-none {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .d-md-block {
+    display: block !important;
+  }
+  .d-md-flex {
+    display: flex !important;
+  }
+}

@@ -1,5 +1,6 @@
-import Navbar from "@/components/Navbar";
+import MobileNav from "@/components/MobileNav";
 import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
 
 export default function RootLayout({
   children,
@@ -11,7 +12,8 @@ export default function RootLayout({
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Navbar />
-        <main className="flex-1 p-4 overflow-auto">{children}</main>
+        <main className="p-2 container">{children}</main>
+        <MobileNav />
       </div>
     </div>
   );

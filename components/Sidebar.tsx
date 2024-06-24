@@ -4,11 +4,13 @@ import React from "react";
 
 const Sidebar = () => {
   return (
-    <div className="h-screen bg-gray-800 text-white w-52 flex flex-col items-center sidebar">
-      <div className="pt-4">
+    <div className="h-screen bg-gray-800 text-white w-52 flex flex-col items-center sidebar d-md-none">
+      <div className="pt-4 row">
         <Link href="/" className="text-white text-lg font-semibold flex items-center">
-          <Image src="/logo.png" alt="Logo" className="mr-4" width={30} height={30}/>
-          CastorFit Pro
+          <div className="col">
+            <Image src="/logo.png" alt="Logo" className="mr-4" width={30} height={30}/>
+          </div>
+          <div className="col">CastorFit Pro</div>
         </Link>
       </div>
       <nav className="sidebar-items">
