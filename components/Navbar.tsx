@@ -1,5 +1,4 @@
 import React from "react";
-import { SidebarProps } from "@/types/index";
 import Image from "next/image";
 
 import {
@@ -32,8 +31,11 @@ import {
   Dumbbell,
 } from "lucide-react";
 import Link from "next/link";
+import { getUserInfo } from "@/lib/actions/user.actions";
 
-const Navbar = ({ user }: SidebarProps) => {
+const Navbar = () => {
+  const user = getUserInfo();
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
