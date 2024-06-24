@@ -51,9 +51,18 @@ const Navbar = () => {
               href="#"
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
-              <Dumbbell className="h-5 w-5 transition-all group-hover:scale-110" />
+              <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
+                <Image
+                  src="/logo.png"
+                  layout="fill"
+                  objectFit="cover"
+                  alt="logo"
+                  className="transition-all group-hover:scale-125"
+                />
+              </div>
               <span className="sr-only">CastorFit Pro</span>
             </Link>
+            
             <Link
               href="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
