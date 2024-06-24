@@ -15,6 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="pt-BR">
       <body className={`${inter.variable} ${ibmPlexSerif.variable}`}>{children}</body>

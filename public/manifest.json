@@ -1,0 +1,16 @@
+{
+    "short_name": "CastorFit",
+    "name": "CastorFit Pro",
+    "description": "Treinamento personalizado e suporte contínuo com Henrique Castor.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "/logo.png",
+        "sizes": "819x819",
+        "type": "image/png"
+      }
+    ]
+  }
