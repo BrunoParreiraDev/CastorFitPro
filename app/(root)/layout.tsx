@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { getUserInfo } from "@/lib/actions/user.actions";
 

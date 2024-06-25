@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dumbbell, Home, LineChart, Settings, Users2 } from "lucide-react";
 
 import {
@@ -17,19 +18,16 @@ const Sidebar = () => {
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
-          href="#"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+          href="/"
+          className="group flex h-10 w-10 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
         >
           <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
-            <Image
-              src="/logo.png"
-              alt="logo"
-              width={500} // valor arbitrário
-              height={500} // valor arbitrário
-              className="absolute inset-0 w-full h-full object-cover transition-all group-hover:scale-125"
-            />
+            <Avatar className="hover:scale-125 transition-all">
+              <AvatarImage src="/logo.png" />
+              <AvatarFallback>CastorFit Pro</AvatarFallback>
+            </Avatar>
+            <span className="sr-only">CastorFit Pro</span>
           </div>
-          <span className="sr-only">CastorFit Pro</span>
         </Link>
 
         <TooltipProvider>

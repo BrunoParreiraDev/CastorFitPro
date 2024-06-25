@@ -1,5 +1,5 @@
+import Link from "next/link";
 import React from "react";
-import Image from "next/image";
 
 import {
   Breadcrumb,
@@ -9,7 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 
 import {
   DropdownMenu,
@@ -19,81 +18,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  Home,
-  LineChart,
-  PanelLeft,
-  Search,
-  Users2,
-  Dumbbell,
-} from "lucide-react";
-import Link from "next/link";
+import { Search } from "lucide-react";
+
+import { ModeToggle } from "@/components/ModeToggle";
 import { getUserInfo } from "@/lib/actions/user.actions";
 
 const Navbar = () => {
   const user = getUserInfo();
 
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button size="icon" variant="outline" className="sm:hidden">
-            <PanelLeft className="h-5 w-5" />
-            <span className="sr-only">Ativar Sidebar</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs">
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            >
-              <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
-                <Image
-                  src="/logo.png"
-                  alt="logo"
-                  width={500} // valor arbitrário
-                  height={500} // valor arbitrário
-                  className="absolute inset-0 w-full h-full object-cover transition-all group-hover:scale-125"
-                />{" "}
-              </div>
-              <span className="sr-only">CastorFit Pro</span>
-            </Link>
-
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Home className="h-5 w-5" />
-              Dashboard
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Dumbbell className="h-5 w-5" />
-              Treinos
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <Users2 className="h-5 w-5" />
-              Alunos
-            </Link>
-            <Link
-              href="#"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="h-5 w-5" />
-              Configurações
-            </Link>
-          </nav>
-        </SheetContent>
-      </Sheet>
+    <>
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>
@@ -121,6 +60,7 @@ const Navbar = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
+      <ModeToggle />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -128,14 +68,10 @@ const Navbar = () => {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-            <Image
-              src={user.profileImage}
-              width={36}
-              height={36}
-              alt="Avatar"
-              title={user.name}
-              className="overflow-hidden rounded-full"
-            />
+            <Avatar>
+              <AvatarImage src={user.profileImage} />
+              <AvatarFallback>{user.name}</AvatarFallback>
+            </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -147,7 +83,7 @@ const Navbar = () => {
           <DropdownMenuItem>Sair</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </header>
+    </>
   );
 };
 

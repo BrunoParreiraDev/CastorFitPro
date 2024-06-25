@@ -1,10 +1,30 @@
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import React from "react";
 import { Button } from "./ui/button";
 import { ListFilter } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./ui/table";
 import { Badge } from "./ui/badge";
 
 import { File } from "lucide-react";
@@ -29,9 +49,7 @@ const TabsComponent = () => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuCheckboxItem checked>
-                Pago
-              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem checked>Pago</DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem>Rejeitado</DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem>Reembolsado</DropdownMenuCheckboxItem>
             </DropdownMenuContent>
@@ -42,7 +60,239 @@ const TabsComponent = () => {
           </Button>
         </div>
       </div>
+
+      {/* === SEMANA === */}
+
       <TabsContent value="week">
+        <Card x-chunk="dashboard-05-chunk-3">
+          <CardHeader className="px-7">
+            <CardTitle>Receitas</CardTitle>
+            <CardDescription>Receitas vindas das mensalidades.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Aluno</TableHead>
+                  <TableHead className="hidden sm:table-cell">Tipo</TableHead>
+                  <TableHead className="hidden sm:table-cell">Status</TableHead>
+                  <TableHead className="hidden md:table-cell">Data</TableHead>
+                  <TableHead className="text-right">Quantidade</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow className="bg-accent">
+                  <TableCell>
+                    <div className="font-medium">Liam Johnson</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      liam@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-23
+                  </TableCell>
+                  <TableCell className="text-right">R$ 739,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Emma Brown</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      emma@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-26
+                  </TableCell>
+                  <TableCell className="text-right">R$ 700,00</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </TabsContent>
+
+      {/* === MÊS === */}
+
+      <TabsContent value="month">
+        <Card x-chunk="dashboard-05-chunk-3">
+          <CardHeader className="px-7">
+            <CardTitle>Receitas</CardTitle>
+            <CardDescription>Receitas vindas das mensalidades.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Aluno</TableHead>
+                  <TableHead className="hidden sm:table-cell">Tipo</TableHead>
+                  <TableHead className="hidden sm:table-cell">Status</TableHead>
+                  <TableHead className="hidden md:table-cell">Data</TableHead>
+                  <TableHead className="text-right">Quantidade</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow className="bg-accent">
+                  <TableCell>
+                    <div className="font-medium">Liam Johnson</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      liam@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-23
+                  </TableCell>
+                  <TableCell className="text-right">R$ 250,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Olivia Smith</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      olivia@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Reembolsado
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="destructive">
+                      Cancelado
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-24
+                  </TableCell>
+                  <TableCell className="text-right">R$ 150,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Noah Williams</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      noah@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-25
+                  </TableCell>
+                  <TableCell className="text-right">R$ 350,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Emma Brown</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      emma@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-26
+                  </TableCell>
+                  <TableCell className="text-right">R$ 450,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Liam Johnson</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      liam@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-23
+                  </TableCell>
+                  <TableCell className="text-right">R$ 250,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Olivia Smith</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      olivia@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Reembolsado
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="destructive">
+                      Cancelado
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-24
+                  </TableCell>
+                  <TableCell className="text-right">R$ 150,00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <div className="font-medium">Emma Brown</div>
+                    <div className="hidden text-sm text-muted-foreground md:inline">
+                      emma@gmail.com
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    Mensalidade
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge className="text-xs" variant="default">
+                      Pago
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    2023-06-26
+                  </TableCell>
+                  <TableCell className="text-right">R$ 450,00</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </TabsContent>
+      <TabsContent value="year">
         <Card x-chunk="dashboard-05-chunk-3">
           <CardHeader className="px-7">
             <CardTitle>Receitas</CardTitle>
@@ -211,6 +461,7 @@ const TabsComponent = () => {
           </CardContent>
         </Card>
       </TabsContent>
+
     </Tabs>
   );
 };
