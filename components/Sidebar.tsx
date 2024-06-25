@@ -23,10 +23,10 @@ const Sidebar = () => {
           <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
             <Image
               src="/logo.png"
-              layout="fill"
-              objectFit="cover"
               alt="logo"
-              className="transition-all group-hover:scale-125"
+              width={500} // valor arbitrário
+              height={500} // valor arbitrário
+              className="absolute inset-0 w-full h-full object-cover transition-all group-hover:scale-125"
             />
           </div>
           <span className="sr-only">CastorFit Pro</span>
