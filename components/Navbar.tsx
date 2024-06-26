@@ -26,10 +26,10 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 import { ModeToggle } from "@/components/ModeToggle";
-import { getUserInfo } from "@/lib/actions/user.actions";
+import { getUserData } from "@/lib/actions/user.actions";
 
-const Navbar = () => {
-  const user = getUserInfo();
+const Navbar = async () => {
+  const user = await getUserData();
 
   return (
     <>
@@ -69,8 +69,8 @@ const Navbar = () => {
             className="overflow-hidden rounded-full"
           >
             <Avatar>
-              <AvatarImage src={user.profileImage} />
-              <AvatarFallback>{user.name}</AvatarFallback>
+              <AvatarImage src={user.profileImage!} />
+              <AvatarFallback>{user.name!}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>

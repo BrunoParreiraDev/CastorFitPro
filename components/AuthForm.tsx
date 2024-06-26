@@ -8,11 +8,13 @@ import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import FormInput from "@/components/FormInput";
 import { Icons } from "@/components/Icons";
+import { signIn } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "O nome de usuário deve ter mais de dois caracteres.",
+  email: z.string().email({
+    message: "O campo deve ser um email válido",
   }),
   password: z.string().min(6, {
     message: "A senha deve ter mais de 6 caracteres.",
@@ -33,15 +35,29 @@ const AuthForm = () => {
     formState: { errors },
   } = methods;
 
-  const onSubmit = (data: any) => {
-    toast({
-      title: "Você enviou os seguintes valores:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  const onSubmit = async (data: any) => {
+    const response = await signIn(data);
+
+    if (response)  {
+      toast({
+        title: "Você Entrou!",
+        description: (
+          <p>Aproveite sua estadia no sistema!</p>
+        ),
+      });
+      redirect('/');
+    } else {
+      toast({
+        title: "Você enviou os seguintes valores:",
+        description: (
+          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+          </pre>
+        ),
+      });
+    }
+
+    
   };
 
   return (
@@ -69,9 +85,9 @@ const AuthForm = () => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <FormInput
-            name="username"
-            label="Acesso"
-            placeholder="Ex: Usuario123"
+            name="email"
+            label="Email"
+            placeholder="Ex: pedroalbano@exemplo.com"
             // description="O acesso utilizado para entrar em sua conta"
             isRequired={true}
             error={errors.username}

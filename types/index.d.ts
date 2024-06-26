@@ -12,3 +12,13 @@ export type SubmitedUserData = {
   username: string;
   password: string;
 };
+
+
+export type LoginUser = {
+  email: string;
+  password: string;
+};
+
+declare interface getUserInfoProps {
+  userId: string;
+}
