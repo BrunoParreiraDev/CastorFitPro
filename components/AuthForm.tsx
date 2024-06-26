@@ -7,7 +7,7 @@ import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import FormInput from "@/components/FormInput";
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 
 
 const FormSchema = z.object({
