@@ -11,10 +11,15 @@ const ibmPlexSerif = IBM_Plex_Sans({
   variable: "--font-ibm-plex-sans",
 });
 
+export const viewport = {
+  viewport: {
+    themeColor: "#0D1526",
+  },
+};
+
 export const metadata: Metadata = {
   title: "CastorFit Pro",
   description: "Treinamento personalizado e suporte contínuo com Henrique Castor.",
-  themeColor: "#0D1526",
   icons: [
     {
       rel: "icon",
