@@ -1,13 +1,11 @@
 import Navbar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { getUserInfo } from "@/lib/actions/user.actions";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userData = getUserInfo();
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">

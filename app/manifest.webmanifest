@@ -1,16 +1,32 @@
 {
-    "short_name": "CastorFit",
-    "name": "CastorFit Pro",
-    "description": "Treinamento personalizado e suporte contínuo com Henrique Castor.",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000",
-    "icons": [
-      {
-        "src": "/logo.png",
-        "sizes": "819x819",
-        "type": "image/png"
-      }
-    ]
-  }
+  "name": "CastorFit Pro",
+  "short_name": "CastorFit",
+  "description": "Treinamento personalizado e suporte contínuo com Henrique Castor.",
+  "theme_color": "#0D1526",
+  "background_color": "#0D1526",
+  "display": "standalone",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "16x16"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "apple-touch-icon"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "800x800"
+    }
+  ]
+}
