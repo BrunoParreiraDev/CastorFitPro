@@ -34,6 +34,7 @@ const FormInput = ({
             <Input
               type={type}
               placeholder={placeholder}
+              id={name}
               {...(isRequired ? { required: true } : {})}
               {...field}
             />

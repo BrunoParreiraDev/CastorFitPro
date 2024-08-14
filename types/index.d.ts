@@ -1,24 +1,32 @@
-export type FormInputProps = {
+import { SubmitHandler } from 'react-hook-form';
+
+export interface FormData {
+  email: string;
+  password: string;
+}
+
+export interface SubmitedUserData {
+  onSubmit: SubmitHandler<FormData>;
+}
+
+export interface FormInputProps {
   name: string;
   label: string;
   placeholder: string;
   description?: string;
   isRequired?: boolean;
-  type?: string;
+  interface?: string;
   error?: FieldError;
 };
 
-export type SubmitedUserData = {
-  username: string;
-  password: string;
-};
-
-
-export type LoginUser = {
-  email: string;
-  password: string;
-};
 
 declare interface getUserInfoProps {
   userId: string;
+}
+
+export interface User {
+  uid: string;
+  email: string;
+  displayName?: string;
+  photoURL?: string;
 }

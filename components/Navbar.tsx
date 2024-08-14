@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 import { ModeToggle } from "@/components/ModeToggle";
-import { getUserData } from "@/lib/actions/user.actions";
+import { getLoggedInUser, getUserData } from "@/lib/actions/user.actions";
 
 const Navbar = async () => {
   const user = await getUserData();
@@ -80,9 +80,9 @@ const Navbar = async () => {
           <DropdownMenuItem>Configuração</DropdownMenuItem>
           <DropdownMenuItem>Suporte</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link href="/entrar">Sair</Link>
-          </DropdownMenuItem>
+          <Link href="/entrar" className="w-screen h-full">
+            <DropdownMenuItem>Sair</DropdownMenuItem>
+          </Link>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

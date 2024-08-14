@@ -14,6 +14,14 @@ export const formatToBRL = (number: number): string => {
   });
 };
 
+export const cleanUserObject = (user: any) => {
+  return {
+    id: user.$id,
+    name: user.name,
+    email: user.email,
+  };
+};
+
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
 export const removeSpecialCharacters = (value: string) => {

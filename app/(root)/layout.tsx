@@ -1,6 +1,6 @@
 import Navbar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { getUserData } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 
 export default async function RootLayout({
@@ -8,9 +8,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const user = await getLoggedInUser();
 
-  // if (!user) redirect("/entrar");
+  const user = await getUserData();
+  console.log(user)
+
+  if (!user) {
+    redirect("/entrar");
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col">
