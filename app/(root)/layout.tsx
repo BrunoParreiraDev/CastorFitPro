@@ -1,19 +1,38 @@
+"use client";
+
 import Navbar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { getUserData } from "@/lib/actions/user.actions";
+import { auth } from "@/lib/server/firebase";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { User } from "firebase/auth";
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [user, setUser] = useState<User | null>(null);
 
-  const user = await getUserData();
-  console.log(user)
+  useEffect(() => {
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      setUser(currentUser);
+      // Enviar informações do usuário para o servidor
+      fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uid: currentUser.uid }),
+      });
+    }
+  }, []);
 
   if (!user) {
     redirect("/entrar");
+    return null; // Garantir que o componente não renderize nada até que o redirecionamento ocorra
   }
 
   return (
