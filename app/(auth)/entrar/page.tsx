@@ -1,9 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getUserData, signIn } from "@/lib/actions/user.actions";
-import { FormData } from "@/types";
-import { toast } from "@/components/ui/use-toast";
-
-import { redirect } from "next/navigation";
 import React from "react";
 
 import {
@@ -14,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import AuthForm from "@/components/AuthForm";
+
 
 const SignIn = () => {
 

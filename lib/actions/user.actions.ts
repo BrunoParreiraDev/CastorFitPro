@@ -1,71 +1,111 @@
-"use server";
+"use client";
 
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, User, UserCredential } from "firebase/auth";
-import { auth } from "../server/firebase";
-import { FormData } from "@/types";
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  User,
+  UserCredential,
+  updateProfile,
+} from "firebase/auth";
+import { auth, storage } from "@/lib/server/firebase";
+import { RegisterData } from "@/types";
+import { AuthData } from "@/types"
+import { v4 as uuidv4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
+
+/**
+ * Realiza o cadastro de um novo usuário com email e senha.
+ *
+ * @param {FormData} data - Os dados do formulário contendo email e senha.
+ * @returns {Promise<{user: User | null, error: string | null}>} Retorna um objeto com os dados do usuário ou um erro.
+ */
+export const signUp = async ({ name, email, password, profileImage }: RegisterData) => {
+  try {
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const user = userCredential.user;
+
+    let photoURL = "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg";
+
+    // Fazer upload da imagem de perfil
+    if (profileImage) {
+      const storageRef = ref(storage, `profileImages/${user.uid}/${uuidv4()}`);
+      await uploadBytes(storageRef, profileImage);
+      photoURL = await getDownloadURL(storageRef);
+    }
+
+    // Atualizar perfil com displayName e photoURL
+    await updateProfile(user, {
+      displayName: name,
+      photoURL,
+    });
+
+    console.log("Usuário criado com nome e imagem:", name, photoURL);
+
+    return { user, error: null };
+  } catch (error: any) {
+    console.error("Erro durante o cadastro:", error.code, error.message);
+    return { user: null, error: error.message };
+  }
+};
 
 
 /**
  * Realiza a autenticação do usuário.
- * 
- * Verifica se o email já está em uso. Se estiver, tenta realizar o login. 
- * Caso contrário, cria um novo usuário com o email e a senha fornecidos.
- * 
+ *
  * @param {FormData} data - Os dados do formulário contendo email e senha.
- * @returns {Promise<UserCredential | null>} As credenciais do usuário autenticado ou null em caso de erro.
- * @throws {Error} Lança um erro se a autenticação falhar.
+ * @returns {Promise<{user: User | null, error: string | null}>} Retorna um objeto com os dados do usuário ou um erro.
  */
-export const signIn = async ({ email, password }: FormData): Promise<UserCredential | null> => {
+export const signIn = async ({ email, password }: AuthData) => {
   try {
-    // Tenta realizar o login, assumindo que o usuário já existe
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential;
+    const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    return { user, error: null };
   } catch (error: any) {
-    if (error.code === 'auth/user-not-found') {
-      // Se o usuário não existir, cria uma nova conta
-      const newUserCredential = await createUserWithEmailAndPassword(auth, email, password);
-      return newUserCredential;
-    } else if (error.code === 'auth/email-already-in-use') {
-      // Se o email já estiver em uso, retorna um erro apropriado
-      throw new Error("O email já está em uso.");
-    } else {
-      console.error('Erro durante a autenticação:', error.code, error.message);
-      throw error;
-    }
-  }const [user, setUser] = useState(null);
+    console.error("Erro durante a autenticação:", error.code, error.message);
+    return { user: null, error: error.message };
+  }
+};
 
-  useEffect(() => {
-    const currentUser = getAuth(auth).currentUser;
-
-    if (currentUser) {
-      setUser(currentUser);
-      // Enviar informações do usuário para o servidor
-      fetch('/api/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ uid: currentUser.uid }),
-      });
-    }
-  }, []);
+/**
+ * Realiza o logout do usuário.
+ *
+ * @returns {Promise<{success: boolean, error: string | null}>} Retorna um objeto indicando o sucesso ou o erro.
+ */
+export const signOut = async () => {
+  try {
+    await firebaseSignOut(auth);
+    return { success: true, error: null };
+  } catch (error: any) {
+    console.error("Erro durante o logout:", error.code, error.message);
+    return { success: false, error: error.message };
+  }
 };
 
 /**
  * Obtém os dados do usuário autenticado atualmente.
- * 
- * Esta função verifica se há um usuário autenticado no Firebase 
- * e retorna os dados desse usuário. Se nenhum usuário estiver autenticado, retorna null.
- * 
- * @returns {User | null} Os dados do usuário autenticado atualmente, ou null se nenhum usuário estiver autenticado.
+ *
+ * @returns {Promise<{user: User | null}>} Retorna os dados do usuário autenticado atualmente ou null se nenhum usuário estiver autenticado.
  */
-export const getUserData = (): User | null => {
-  // const user = auth.currentUser;
-  // if (user) {
-  //   return user;
-  // } else {
-  //   console.log('Nenhum usuário está autenticado no momento.');
-  //   return null;
-  // }
-  return null
+export const getUserData = (): Promise<{
+  profileImage: any; user: User | null 
+}> => {
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        resolve({ user });
+      } else {
+        resolve({ user: null });
+      }
+    });
+  });
 };
+

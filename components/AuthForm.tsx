@@ -1,89 +1,68 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, FormProvider } from "react-hook-form";
-import { z } from "zod";
-
+import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import FormInput from "@/components/FormInput";
-import { toast } from "./ui/use-toast";
 import { useState } from "react";
+import { signIn } from "@/lib/actions/user.actions"; // Importe a função signIn
+import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
-
-const FormSchema = z.object({
-  email: z.string().email({
-    message: "O campo deve ser um email válido",
-  }),
-  password: z.string().min(6, {
-    message: "A senha deve ter mais de 6 caracteres.",
-  }),
-});
 
 const AuthForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para armazenar mensagem de erro
+  const { toast } = useToast();
   const router = useRouter();
 
+  // Inicializa o useForm
   const methods = useForm({
-    resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit } = methods;
 
-  const onSubmit = async (data: { email: string; password: string }) => {
+  // Função para lidar com a submissão do formulário
+  const onSubmit = async (data: any) => {
+    setIsLoading(true);
+    setErrorMessage(null); // Reseta a mensagem de erro antes de tentar fazer login
+
     try {
-      setIsLoading(true);
+      const { user, error } = await signIn(data);
 
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      setIsLoading(false);
-      if (response.ok) {
-        // Handle response if necessary
-        const responseData = await response.json();
-
+      if (error) {
+        setErrorMessage(error);
+      } else {
         toast({
-          title: `Seja bem-vindo ${responseData?.name || ""}!`,
-          description: <p>Você se autenticou com sucesso.</p>,
+          title: "Sucesso!",
+          description: "Bem-vindo(a) de volta " + user?.displayName + "!",
         });
 
+        // Redirecionar ou executar outras ações após o login bem-sucedido
         router.push("/");
       }
-    } catch (error) {
+    } catch (error: any) {
+      setErrorMessage("Ocorreu um erro inesperado. Tente novamente.");
       toast({
-        title: "Erro ao fazer login com Email",
-        description: <p>{(error as Error).message}</p>,
+        title: "Oops!",
+        description: "Erro ao autenticar, tente novamente mais tarde.",
       });
+      console.error("Erro ao fazer login:", error);
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={handleSubmit((data, event) => {
-          event?.preventDefault();
-          onSubmit(data);
-        })}
-        className="space-y-6"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <FormInput
           name="email"
           label="Email"
           placeholder="Ex: pedroalbano@exemplo.com"
           isRequired={true}
-          error={errors.email}
         />
         <FormInput
           name="password"
@@ -91,8 +70,10 @@ const AuthForm = () => {
           type="password"
           placeholder="Ex: MD3cd8r68"
           isRequired={true}
-          error={errors.password}
         />
+        {errorMessage && (
+          <div className="text-red-500 text-sm">{errorMessage}</div>
+        )}
         <Button type="submit" className="w-full">
           {isLoading ? "Carregando..." : "Enviar"}
         </Button>

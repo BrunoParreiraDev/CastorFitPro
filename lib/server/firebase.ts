@@ -1,29 +1,34 @@
-"use client";
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyAMRfpbt3pm8vefpRGXpwGbpomBxRd1Ym4",
-  authDomain: "castorfit-pro.firebaseapp.com",
-  projectId: "castorfit-pro",
-  storageBucket: "castorfit-pro.appspot.com",
-  messagingSenderId: "202228520441",
-  appId: "1:202228520441:web:09f87d73a728af3b33d928",
-  measurementId: "G-EK2RCD68HD",
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 let analytics;
-if (typeof window !== "undefined") {
-  analytics = getAnalytics(app);
+
+if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID) {
+  isSupported().then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(app);
+    }
+  });
 }
 
-
-auth.languageCode = "pt-BR";
-export {app, auth, analytics}
+export { app, auth, analytics, storage };

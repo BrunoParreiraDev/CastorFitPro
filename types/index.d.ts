@@ -1,6 +1,13 @@
 import { SubmitHandler } from 'react-hook-form';
 
-export interface FormData {
+export interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+  profileImage: string;
+}
+
+export interface AuthData {
   email: string;
   password: string;
 }
