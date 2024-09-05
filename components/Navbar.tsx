@@ -39,8 +39,6 @@ const Navbar = () => {
     const fetchUserData = async () => {
       const data = await getUserData();
       setUser(data);
-      console.log(user);
-      console.log(user == null);
     };
 
     fetchUserData();

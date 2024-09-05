@@ -1,50 +1,51 @@
-// /components/UserProfile.tsx
+"use client";
 
-import { User } from "@/types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getUserData } from "@/lib/actions/user.actions";
 import Image from "next/image";
 
 const UserProfile = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<{
+    profileImage: string;
+    name: string;
+    firstname?: string;
+    privileges?: string;
+  } | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch("/api/user", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-
-        const userData: User = await response.json();
-        setUser(userData);
-      } catch (error) {
-        setError((error as Error).message);
-      }
+    const fetchUserData = async () => {
+      const data = await getUserData();
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+      console.log(data);
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+      setUserInfo(data);
     };
 
-    fetchUser();
+    fetchUserData();
   }, []);
 
-  if (error) {
-    return <p>{error}</p>;
+  if (!userInfo || !userInfo.user) {
+    return <div>Usuário não encontrado</div>;
   }
 
-  if (!user) {
-    return <p>Loading...</p>;
-  }
+  // Define valores padrão caso os dados estejam ausentes
+  const profileImage = userInfo.profileImage || "/default-profile.jpg"; // caminho padrão para imagem
+  const name = userInfo.name || "Usuário Desconhecido";
+  const firstname = userInfo.firstname || "Primeiro nome não disponível";
+  const privileges = userInfo.privileges || "Privilégios não disponíveis";
 
   return (
     <div>
-      <h1>Welcome, {user.displayName || user.email}!</h1>
-      <p>Email: {user.email}</p>
-      {user.photoURL && <Image src={user.photoURL} alt="User profile picture" width={100} height={100} />}
+      <h1>Informações do Usuário</h1>
+      <Image
+        width={32}
+        height={32}
+        src={profileImage}
+        alt={name}
+      />
+      <p>Nome: {name}</p>
+      <p>Primeiro Nome: {firstname}</p>
+      <p>Privilégios: {privileges}</p>
     </div>
   );
 };

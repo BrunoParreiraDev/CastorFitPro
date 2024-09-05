@@ -33,12 +33,12 @@ export const signUp = async ({ name, email, password, profileImage }: RegisterDa
 
     const user = userCredential.user;
 
-    let photoURL = "https://static.vecteezy.com/system/resources/thumbnails/005/129/844/small_2x/profile-user-icon-isolated-on-white-background-eps10-free-vector.jpg";
+    let photoURL = "/users/default-profile.jpg";
 
     // Fazer upload da imagem de perfil
-    if (profileImage) {
-      const storageRef = ref(storage, `profileImages/${user.uid}/${uuidv4()}`);
-      await uploadBytes(storageRef, profileImage);
+    if (profileImage instanceof File) {
+      const storageRef = ref(storage, `/users/${user.uid}/${uuidv4()}`);
+      await uploadBytes(storageRef, profileImage); // Certifique-se de que profileImage é do tipo File ou Blob
       photoURL = await getDownloadURL(storageRef);
     }
 
@@ -48,7 +48,6 @@ export const signUp = async ({ name, email, password, profileImage }: RegisterDa
       photoURL,
     });
 
-    console.log("Usuário criado com nome e imagem:", name, photoURL);
 
     return { user, error: null };
   } catch (error: any) {
@@ -93,19 +92,23 @@ export const signOut = async () => {
 /**
  * Obtém os dados do usuário autenticado atualmente.
  *
- * @returns {Promise<{user: User | null}>} Retorna os dados do usuário autenticado atualmente ou null se nenhum usuário estiver autenticado.
+ * @returns {Promise<{profileImage: string; name: string; user: User | null}>} Retorna os dados do usuário autenticado atualmente ou null se nenhum usuário estiver autenticado.
  */
 export const getUserData = (): Promise<{
-  profileImage: any; user: User | null 
+  profileImage: string;
+  name: string;
+  user: User | null;
 }> => {
   return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        resolve({ user });
+        // Extrair o nome do usuário ou fornecer um valor padrão
+        const profileImage = user.photoURL ? user.photoURL : "default-profile.jpg";
+        const name = user.displayName ? user.displayName : "Usuário Anônimo"; // Extrai o nome do usuário
+        resolve({ profileImage, name, user });
       } else {
-        resolve({ user: null });
+        resolve({ profileImage: "default-profile.jpg", name: "", user: null });
       }
     });
   });
 };
-
