@@ -22,9 +22,9 @@ export interface FormInputProps {
   placeholder: string;
   description?: string;
   isRequired?: boolean;
-  interface?: string;
+  type?: React.HTMLInputTypeAttribute; // Atualize para aceitar HTMLInputTypeAttribute ou undefined
   error?: FieldError;
-};
+}
 
 
 declare interface getUserInfoProps {

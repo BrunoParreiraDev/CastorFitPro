@@ -4,17 +4,16 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import FormInput from "@/components/FormInput";
 import { useState } from "react";
-import { signIn } from "@/lib/actions/user.actions"; // Importe a função signIn
+import { signIn } from "@/lib/actions/user.actions";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 
 const AuthForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para armazenar mensagem de erro
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { toast } = useToast();
   const router = useRouter();
 
-  // Inicializa o useForm
   const methods = useForm({
     defaultValues: {
       email: "",
@@ -24,10 +23,9 @@ const AuthForm = () => {
 
   const { handleSubmit } = methods;
 
-  // Função para lidar com a submissão do formulário
   const onSubmit = async (data: any) => {
     setIsLoading(true);
-    setErrorMessage(null); // Reseta a mensagem de erro antes de tentar fazer login
+    setErrorMessage(null);
 
     try {
       const { user, error } = await signIn(data);
@@ -39,8 +37,6 @@ const AuthForm = () => {
           title: "Sucesso!",
           description: "Bem-vindo(a) de volta " + user?.displayName + "!",
         });
-
-        // Redirecionar ou executar outras ações após o login bem-sucedido
         router.push("/");
       }
     } catch (error: any) {

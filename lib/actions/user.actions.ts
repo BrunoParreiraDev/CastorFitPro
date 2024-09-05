@@ -35,12 +35,12 @@ export const signUp = async ({ name, email, password, profileImage }: RegisterDa
 
     let photoURL = "/users/default-profile.jpg";
 
-    // Fazer upload da imagem de perfil
-    if (profileImage instanceof File) {
-      const storageRef = ref(storage, `/users/${user.uid}/${uuidv4()}`);
-      await uploadBytes(storageRef, profileImage); // Certifique-se de que profileImage é do tipo File ou Blob
-      photoURL = await getDownloadURL(storageRef);
-    }
+    // // Fazer upload da imagem de perfil
+    // if (profileImage instanceof File) {
+    //   const storageRef = ref(storage, `/users/${user.uid}/${uuidv4()}`);
+    //   await uploadBytes(storageRef, profileImage); // Certifique-se de que profileImage é do tipo File ou Blob
+    //   photoURL = await getDownloadURL(storageRef);
+    // }
 
     // Atualizar perfil com displayName e photoURL
     await updateProfile(user, {
