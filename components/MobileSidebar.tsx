@@ -26,7 +26,7 @@ const MobileSidebar = () => {
               <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
                 <Avatar className="hover:scale-125 transition-all">
                   <AvatarImage src="/logo.png" />
-                  <AvatarFallback>CastorFit Pro</AvatarFallback>
+                  <AvatarFallback>HC</AvatarFallback>
                 </Avatar>
               </div>
             </Link>
@@ -34,7 +34,7 @@ const MobileSidebar = () => {
           </div>
 
           <Link
-            href="#"
+            href="/"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
           >
             <Home className="h-5 w-5" />
