@@ -24,7 +24,7 @@ const Sidebar = () => {
           <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
             <Avatar className="hover:scale-125 transition-all">
               <AvatarImage src="/logo.png" />
-              <AvatarFallback>CastorFit Pro</AvatarFallback>
+              <AvatarFallback>HC</AvatarFallback>
             </Avatar>
             <span className="sr-only">CastorFit Pro</span>
           </div>
@@ -34,7 +34,7 @@ const Sidebar = () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
+                href="/"
                 className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
               >
                 <Home className="h-5 w-5" />

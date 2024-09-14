@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Auth,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
@@ -9,45 +8,27 @@ import {
   User,
   UserCredential,
   updateProfile,
+  updatePassword,
 } from "firebase/auth";
 import { auth, storage } from "@/lib/server/firebase";
-import { RegisterData } from "@/types";
-import { AuthData } from "@/types"
+import { RegisterData, AuthData } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
+const DEFAULT_PROFILE_IMAGE = "/users/default-profile.jpg";
 
-/**
- * Realiza o cadastro de um novo usuário com email e senha.
- *
- * @param {FormData} data - Os dados do formulário contendo email e senha.
- * @returns {Promise<{user: User | null, error: string | null}>} Retorna um objeto com os dados do usuário ou um erro.
- */
 export const signUp = async ({ name, email, password, profileImage }: RegisterData) => {
   try {
-    const userCredential: UserCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    let photoURL = "/users/default-profile.jpg";
+    let photoURL = DEFAULT_PROFILE_IMAGE;
 
-    // // Fazer upload da imagem de perfil
-    // if (profileImage instanceof File) {
-    //   const storageRef = ref(storage, `/users/${user.uid}/${uuidv4()}`);
-    //   await uploadBytes(storageRef, profileImage); // Certifique-se de que profileImage é do tipo File ou Blob
-    //   photoURL = await getDownloadURL(storageRef);
-    // }
+    if (profileImage instanceof File) {
+      photoURL = await uploadProfileImage(user.uid, profileImage);
+    }
 
-    // Atualizar perfil com displayName e photoURL
-    await updateProfile(user, {
-      displayName: name,
-      photoURL,
-    });
-
+    await updateProfile(user, { displayName: name, photoURL });
 
     return { user, error: null };
   } catch (error: any) {
@@ -56,29 +37,16 @@ export const signUp = async ({ name, email, password, profileImage }: RegisterDa
   }
 };
 
-
-/**
- * Realiza a autenticação do usuário.
- *
- * @param {FormData} data - Os dados do formulário contendo email e senha.
- * @returns {Promise<{user: User | null, error: string | null}>} Retorna um objeto com os dados do usuário ou um erro.
- */
 export const signIn = async ({ email, password }: AuthData) => {
   try {
     const userCredential: UserCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    return { user, error: null };
+    return { user: userCredential.user, error: null };
   } catch (error: any) {
     console.error("Erro durante a autenticação:", error.code, error.message);
     return { user: null, error: error.message };
   }
 };
 
-/**
- * Realiza o logout do usuário.
- *
- * @returns {Promise<{success: boolean, error: string | null}>} Retorna um objeto indicando o sucesso ou o erro.
- */
 export const signOut = async () => {
   try {
     await firebaseSignOut(auth);
@@ -89,26 +57,51 @@ export const signOut = async () => {
   }
 };
 
-/**
- * Obtém os dados do usuário autenticado atualmente.
- *
- * @returns {Promise<{profileImage: string; name: string; user: User | null}>} Retorna os dados do usuário autenticado atualmente ou null se nenhum usuário estiver autenticado.
- */
-export const getUserData = (): Promise<{
-  profileImage: string;
-  name: string;
-  user: User | null;
-}> => {
+export const getUserData = (): Promise<{ profileImage: string; name: string; user: User | null }> => {
   return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Extrair o nome do usuário ou fornecer um valor padrão
-        const profileImage = user.photoURL ? user.photoURL : "default-profile.jpg";
-        const name = user.displayName ? user.displayName : "Usuário Anônimo"; // Extrai o nome do usuário
+        const profileImage = user.photoURL || DEFAULT_PROFILE_IMAGE;
+        const name = user.displayName || "Usuário Anônimo";
         resolve({ profileImage, name, user });
       } else {
-        resolve({ profileImage: "default-profile.jpg", name: "", user: null });
+        resolve({ profileImage: DEFAULT_PROFILE_IMAGE, name: "", user: null });
       }
     });
   });
 };
+
+export const updateUserData = async ({
+  name,
+  password,
+  profileImage,
+}: {
+  name: string;
+  password?: string;
+  profileImage?: File;
+}) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error("Nenhum usuário autenticado.");
+
+    if (name) await updateProfile(user, { displayName: name });
+    if (password) await updatePassword(user, password);
+
+    let photoURL = user.photoURL;
+    if (profileImage) {
+      photoURL = await uploadProfileImage(user.uid, profileImage);
+      await updateProfile(user, { photoURL });
+    }
+
+    return { user, error: null };
+  } catch (error: any) {
+    console.error("Erro ao atualizar os dados do usuário:", error.message);
+    return { user: null, error: error.message };
+  }
+};
+
+async function uploadProfileImage(userId: string, profileImage: File): Promise<string> {
+  const storageRef = ref(storage, `/users/${userId}/${uuidv4()}`);
+  await uploadBytes(storageRef, profileImage);
+  return getDownloadURL(storageRef);
+}

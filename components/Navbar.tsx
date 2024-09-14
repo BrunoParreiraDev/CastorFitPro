@@ -26,19 +26,17 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 import { ModeToggle } from "@/components/ModeToggle";
-import { getUserData, signOut } from "@/lib/actions/user.actions"; // Importando a função signOut
+import { getUserData, signOut } from "@/lib/actions/user.actions";
+import { UserInfo } from "firebase/auth";
 
 const Navbar = () => {
-  const [user, setUser] = useState<{
-    profileImage: string;
-    name: string;
-  } | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false); // Estado para o processo de logout
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
       const data = await getUserData();
-      setUser(data);
+      setUser(data.user);
     };
 
     fetchUserData();
@@ -46,26 +44,25 @@ const Navbar = () => {
 
   // Função para lidar com o logout
   const handleSignOut = async () => {
-    setIsLoggingOut(true); // Definindo o estado de logout como verdadeiro
+    setIsLoggingOut(true);
     try {
-      const { success, error } = await signOut(); // Chamando a função signOut
+      const { success, error } = await signOut();
       if (success) {
-        // Redirecionar ou executar outras ações após o logout bem-sucedido
-        window.location.href = "/entrar"; // Redireciona para a página de login após o logout
+        window.location.href = "/entrar"; // Redireciona após logout
       } else {
         console.error("Erro ao fazer logout:", error);
-        alert("Erro ao sair. Tente novamente."); // Pode usar toastr ou outro método de notificação
+        alert("Erro ao sair. Tente novamente.");
       }
     } catch (error) {
       console.error("Erro inesperado durante o logout:", error);
-      alert("Erro inesperado durante o logout. Tente novamente."); // Pode usar toastr ou outro método de notificação
+      alert("Erro inesperado. Tente novamente.");
     } finally {
-      setIsLoggingOut(false); // Resetando o estado de logout após a tentativa
+      setIsLoggingOut(false);
     }
   };
 
   if (!user) {
-    return <></>; // Exibe um carregador ou algum outro conteúdo enquanto os dados são carregados
+    return null; // Pode ser um loader ou outro componente de carregamento
   }
 
   return (
@@ -89,6 +86,7 @@ const Navbar = () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+
       <div className="relative ml-auto flex-1 md:grow-0">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -97,7 +95,9 @@ const Navbar = () => {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
       </div>
+
       <ModeToggle />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -107,34 +107,27 @@ const Navbar = () => {
           >
             <Avatar>
               <AvatarImage
-                src={
-                  user.profileImage
-                    ? user.profileImage
-                    : "users/henrique_castor.jpg"
-                }
+                src={user.photoURL || "/users/default_profile.jpg"}
               />
-              <AvatarFallback>{user.name}</AvatarFallback>
+              <AvatarFallback>{user.displayName}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Configuração</DropdownMenuItem>
-          <DropdownMenuItem>Suporte</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="w-full h-full">
-            <Link href="/entrar" passHref className="w-full h-full block">
-              Entrar
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="w-full h-full">
-            <Link href="/cadastrar" passHref className="w-full h-full block">
-              Cadastrar
-            </Link>
-          </DropdownMenuItem>
+          {!user && (
+            <DropdownMenuItem>
+              <Link href="/entrar">Entrar</Link>
+            </DropdownMenuItem>
+          )}
           {user && (
             <>
+              <DropdownMenuItem>
+                <Link href="/perfil">Minha Conta</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Configuração</DropdownMenuItem>
+              <DropdownMenuItem>Suporte</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={handleSignOut}

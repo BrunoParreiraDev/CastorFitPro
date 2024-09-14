@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import InfoCards from "@/components/InfoCards";
 import TabelaReceita from "@/components/TabelaReceita";
 import { getUserData } from "@/lib/actions/user.actions"; // Certifique-se de que o caminho esteja correto
-import { User } from "firebase/auth";
+import { UserInfo } from "firebase/auth";
 
 const Home = () => {
-  const [user, setUser] = useState<User | null>(null); // Estado é do tipo User | null
+  const [user, setUser] = useState<UserInfo | null>(null); // Estado é do tipo User | null
 
   useEffect(() => {
     const fetchData = async () => {

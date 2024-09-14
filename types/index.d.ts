@@ -4,7 +4,7 @@ export interface RegisterData {
   name: string;
   email: string;
   password: string;
-  profileImage: string;
+  profileImage: any;
 }
 
 export interface AuthData {
