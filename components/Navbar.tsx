@@ -1,6 +1,7 @@
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+'use client'
 
+import Link from "next/link"
+import React, { useEffect, useState } from "react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,59 +9,52 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
+} from "@/components/ui/breadcrumb"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
-import { Search } from "lucide-react";
-
-import { ModeToggle } from "@/components/ModeToggle";
-import { getUserData, signOut } from "@/lib/actions/user.actions";
-import { UserInfo } from "firebase/auth";
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { ModeToggle } from "@/components/ModeToggle"
+import { getUserData, signOut } from "@/lib/actions/user.actions"
+import { UserInfo } from "firebase/auth"
 
 const Navbar = () => {
-  const [user, setUser] = useState<UserInfo | null>(null);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [user, setUser] = useState<UserInfo | null>(null)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const data = await getUserData();
-      setUser(data.user);
-    };
+      const data = await getUserData()
+      setUser(data.user)
+    }
 
-    fetchUserData();
-  }, []);
+    fetchUserData()
+  }, [])
 
-  // Função para lidar com o logout
   const handleSignOut = async () => {
-    setIsLoggingOut(true);
+    setIsLoggingOut(true)
     try {
-      const { success, error } = await signOut();
+      const { success, error } = await signOut()
       if (success) {
-        window.location.href = "/entrar"; // Redireciona após logout
+        window.location.href = "/entrar"
       } else {
-        console.error("Erro ao fazer logout:", error);
-        alert("Erro ao sair. Tente novamente.");
+        console.error("Erro ao fazer logout:", error)
+        alert("Erro ao sair. Tente novamente.")
       }
     } catch (error) {
-      console.error("Erro inesperado durante o logout:", error);
-      alert("Erro inesperado. Tente novamente.");
+      console.error("Erro inesperado durante o logout:", error)
+      alert("Erro inesperado. Tente novamente.")
     } finally {
-      setIsLoggingOut(false);
+      setIsLoggingOut(false)
     }
-  };
-
+  }
 
   return (
     <>
@@ -104,22 +98,22 @@ const Navbar = () => {
           >
             <Avatar>
               <AvatarImage
-                src={user.photoURL || "/users/default_profile.jpg"}
+                src={user?.photoURL || "/users/default_profile.jpg"}
+                alt="Profile"
               />
-              <AvatarFallback>{user.displayName}</AvatarFallback>
+              <AvatarFallback>{user?.displayName?.charAt(0) || 'U'}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">
-          {!user && (
-            <DropdownMenuItem>
+          {!user ? (
+            <DropdownMenuItem asChild>
               <Link href="/entrar">Entrar</Link>
             </DropdownMenuItem>
-          )}
-          {user && (
+          ) : (
             <>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link href="/perfil">Minha Conta</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
@@ -127,9 +121,8 @@ const Navbar = () => {
               <DropdownMenuItem>Suporte</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={handleSignOut}
+                onSelect={handleSignOut}
                 disabled={isLoggingOut}
-                className="cursor-pointer"
               >
                 Sair
               </DropdownMenuItem>
@@ -138,7 +131,7 @@ const Navbar = () => {
         </DropdownMenuContent>
       </DropdownMenu>
     </>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
