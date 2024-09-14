@@ -17,3 +17,7 @@ self.addEventListener('install', (e) => {
     );
   });
   
+  self.addEventListener('activate', event => {
+    console.log('Service Worker activating.');
+  });
+  

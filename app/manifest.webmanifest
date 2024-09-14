@@ -27,6 +27,13 @@
       "src": "/logo.png",
       "type": "image/png",
       "sizes": "800x800"
+    },
+    {
+      "src": "/logo.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
     }
+    
   ]
 }
