@@ -61,9 +61,6 @@ const Navbar = () => {
     }
   };
 
-  if (!user) {
-    return null; // Pode ser um loader ou outro componente de carregamento
-  }
 
   return (
     <>
