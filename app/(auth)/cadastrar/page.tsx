@@ -15,7 +15,7 @@ const Cadastrar = () => {
   return (
     <Card className="max-w-screen-sm mx-auto mt-5">
       <CardHeader className="grid grid-cols-1 md:grid-cols-12 gap-4 border-b-2">
-        <div className="hidden md:block md:col-span-2 mx-auto my-auto mr-1 scale-125">
+        <div className="md:col-span-2 mx-auto my-auto mr-1 scale-125">
           <Avatar>
             <AvatarImage src="/logo.png" />
             <AvatarFallback>Logo</AvatarFallback>

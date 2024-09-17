@@ -1,38 +1,110 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import React from "react";
+"use client";
 
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
+  CardContent,
+  CardFooter,
   CardTitle,
 } from "@/components/ui/card";
-import RegisterUserForm from "@/components/RegisterUserForm";
+import { Separator } from "@/components/ui/separator";
+import { useRouter } from 'next/navigation'
 
-const AlunosPage = () => {
+
+
+// Dados de exemplo dos alunos
+const alunosData = [
+  {
+    id: 1,
+    nome: "João Silva",
+    telefone: "(11) 98765-4321",
+    email: "joao@email.com",
+  },
+  {
+    id: 2,
+    nome: "Maria Santos",
+    telefone: "(11) 91234-5678",
+    email: "maria@email.com",
+  },
+  {
+    id: 3,
+    nome: "Pedro Oliveira",
+    telefone: "(11) 99876-5432",
+    email: "pedro@email.com",
+  },
+  {
+    id: 4,
+    nome: "Ana Rodrigues",
+    telefone: "(11) 92345-6789",
+    email: "ana@email.com",
+  },
+];
+
+export default function AlunosPage() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
+  const filteredAlunos = alunosData.filter((aluno) =>
+    aluno.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <Card className="w-full mx-auto mt-5">
-      <CardHeader className="grid grid-cols-1 md:grid-cols-12 gap-4 border-b-2">
-        <div className="hidden md:block md:col-span-2 mx-auto my-auto mr-1 scale-125">
-          <Avatar>
-            <AvatarImage src="/logo.png" />
-            <AvatarFallback>Logo</AvatarFallback>
-          </Avatar>
-        </div>
-        <div className="col-span-12 md:col-span-10">
-          <CardTitle>Editar</CardTitle>
-          <CardDescription>
-            Preencha os campos com suas credenciais para editar o aluno.
-          </CardDescription>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <RegisterUserForm />
-      </CardContent>
-    </Card>
-  );
-};
+    <div className="container mx-auto p-4">
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="flex space-x-4">
+            <Input
+              className="w-2/3"
+              placeholder="Pesquisar alunos..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Button
+              className="w-1/3"
+              onClick={() => router.push("/alunos/novo")}
+            >
+              Novo
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
-export default AlunosPage;
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {filteredAlunos.map((aluno) => (
+          <Card key={aluno.id}>
+            <CardHeader>
+              <CardTitle>{aluno.nome}</CardTitle>
+            </CardHeader>
+            <Separator />
+            <CardContent className="my-3">
+              <p>
+                <strong>Telefone:</strong> {aluno.telefone}
+              </p>
+              <p>
+                <strong>E-mail:</strong> {aluno.email}
+              </p>
+            </CardContent>
+            <Separator />
+            <CardFooter className="flex justify-between mt-5">
+              <Button
+                variant="outline"
+                className="w-[49%] bg-yellow-400 hover:bg-yellow-500"
+              >
+                Editar
+              </Button>
+              <Button
+                variant="outline"
+                className="w-[49%] bg-red-500 hover:bg-red-600 text-white"
+              >
+                Excluir
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
