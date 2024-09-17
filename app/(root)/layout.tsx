@@ -1,14 +1,17 @@
-"use client";
-
 import Navbar from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
+
+export const metadata = {
+  title: 'CastorFit Pro | Dashboard'
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Sidebar />

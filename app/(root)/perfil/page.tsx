@@ -19,7 +19,7 @@ const updateSchema = z.object({
   profileImage: z.any().optional(),
 })
 
-export default function Perfil() {
+export default function PerfilPage() {
   const [user, setUser] = useState<UserInfo | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)

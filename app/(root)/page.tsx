@@ -6,7 +6,7 @@ import TabelaReceita from "@/components/TabelaReceita";
 import { getUserData } from "@/lib/actions/user.actions"; // Certifique-se de que o caminho esteja correto
 import { UserInfo } from "firebase/auth";
 
-const Home = () => {
+const HomePage = () => {
   const [user, setUser] = useState<UserInfo | null>(null); // Estado é do tipo User | null
 
   useEffect(() => {
@@ -34,4 +34,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
