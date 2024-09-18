@@ -12,7 +12,6 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getUserData();
-      console.log("User data:", data.user); // Adiciona console.log para inspecionar o usuário retornado
       setUser(data.user); // Atualiza o estado com o usuário retornado
     };
 
