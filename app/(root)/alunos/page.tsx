@@ -5,15 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Card,
-  CardHeader,
   CardContent,
-  CardFooter,
-  CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { listStudents } from "@/lib/actions/user.actions";
 import { useRouter } from 'next/navigation'
+import AlunoCard from "@/components/AlunoCard";
 
 interface Aluno {
   id: string;
@@ -57,13 +55,13 @@ export default function AlunosPage() {
         <CardContent className="p-4">
           <div className="flex space-x-4">
             <Input
-              className="w-2/3"
+              className="w-2/3 contrast-theme"
               placeholder="Pesquisar alunos..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Button
-              className="w-1/3"
+              className="w-1/3 text-white"
               onClick={() => router.push("/alunos/novo")}
             >
               Novo
@@ -77,40 +75,7 @@ export default function AlunosPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredAlunos.map((aluno) => (
-            <Card key={aluno.id}>
-              <CardHeader>
-                <CardTitle>{aluno.nome}</CardTitle>
-              </CardHeader>
-              <Separator />
-              <CardContent className="my-3">
-                <p>
-                  <strong>Telefone:</strong> {aluno.telefone}
-                </p>
-                <p>
-                  <strong>E-mail:</strong> {aluno.email}
-                </p>
-              </CardContent>
-              <Separator />
-              <CardFooter className="flex justify-between mt-5">
-                <Button
-                  variant="outline"
-                  className="w-[49%] bg-yellow-400 hover:bg-yellow-500"
-                  onClick={() => router.push(`/alunos/editar/${aluno.id}`)}
-                >
-                  Editar
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-[49%] bg-red-500 hover:bg-red-600 text-white"
-                  onClick={() => {
-                    // Implement delete functionality here
-                    console.log(`Delete aluno with id: ${aluno.id}`);
-                  }}
-                >
-                  Excluir
-                </Button>
-              </CardFooter>
-            </Card>
+            <AlunoCard key={aluno.id} aluno={aluno} onDelete={() => alert('em desenvolvimento')} />
           ))}
         </div>
       )}

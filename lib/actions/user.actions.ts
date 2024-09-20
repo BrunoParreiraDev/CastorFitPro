@@ -10,7 +10,7 @@ import {
   updateProfile,
   updatePassword,
 } from "firebase/auth";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, storage, db } from "@/lib/server/firebase";
 
@@ -126,7 +126,7 @@ export const registerStudent = async (alunoData: {
   endereco?: string;
 }) => {
   try {
-    const alunoRef = doc(db, "alunos", uuidv4());
+    const alunoRef = doc(db, "alunos");
     await setDoc(alunoRef, {
       nome: alunoData.nome,
       email: alunoData.email,
@@ -154,6 +154,52 @@ export const listStudents = async () => {
   } catch (error: any) {
     console.error("Erro ao listar alunos:", error.message);
     return { alunos: [], error: error.message };
+  }
+};
+
+export const updateStudent = async (studentData: {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  endereco?: string;
+  altura?: number;
+  peso?: number;
+  // Adicione outros campos físicos conforme necessário
+}) => {
+  try {
+    const studentRef = doc(db, "alunos", studentData.id);
+    await setDoc(studentRef, {
+      nome: studentData.nome,
+      email: studentData.email,
+      telefone: studentData.telefone,
+      endereco: studentData.endereco || "",
+      altura: studentData.altura || null,
+      peso: studentData.peso || null,
+      // Adicione outros campos físicos conforme necessário
+      dataAtualizacao: new Date(),
+    }, { merge: true });
+
+    return { success: true, error: null };
+  } catch (error: any) {
+    console.error("Erro ao atualizar aluno:", error.message);
+    return { success: false, error: error.message };
+  }
+};
+
+export const getStudentById = async (id: string) => {
+  try {
+    const studentRef = doc(db, "alunos", id);
+    const studentSnap = await getDoc(studentRef);
+    
+    if (studentSnap.exists()) {
+      return { student: { id: studentSnap.id, ...studentSnap.data() }, error: null };
+    } else {
+      return { student: null, error: "Aluno não encontrado" };
+    }
+  } catch (error: any) {
+    console.error("Erro ao buscar aluno:", error.message);
+    return { student: null, error: error.message };
   }
 };
 
