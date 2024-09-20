@@ -153,8 +153,8 @@ const Navbar = () => {
                     <Link href="/perfil">Minha Conta</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Configuração</DropdownMenuItem>
-                  <DropdownMenuItem>Suporte</DropdownMenuItem>
+                  <DropdownMenuItem><Link href="/config">Configuração</Link></DropdownMenuItem>
+                  <DropdownMenuItem><Link href="/suporte">Suporte</Link></DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onSelect={handleSignOut}
