@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import Link from "next/link";
+import { SkeletonLogo } from "./SkeletonLogo";
 
 const Sidebar = () => {
   return (
@@ -24,7 +25,7 @@ const Sidebar = () => {
           <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
             <Avatar className="hover:scale-125 transition-all">
               <AvatarImage src="/logo.png" />
-              <AvatarFallback>HC</AvatarFallback>
+              <AvatarFallback><SkeletonLogo /></AvatarFallback>
             </Avatar>
             <span className="sr-only">CastorFit Pro</span>
           </div>

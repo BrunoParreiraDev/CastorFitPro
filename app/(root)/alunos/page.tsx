@@ -3,15 +3,13 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
 import { listStudents } from "@/lib/actions/user.actions";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import AlunoCard from "@/components/AlunoCard";
+import { SkeletonCard } from "@/components/SkeletonCard";
 
 interface Aluno {
   id: string;
@@ -70,15 +68,24 @@ export default function AlunosPage() {
         </CardContent>
       </Card>
 
-      {isLoading ? (
-        <div className="text-center">Carregando...</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {filteredAlunos.map((aluno) => (
-            <AlunoCard key={aluno.id} aluno={aluno} onDelete={() => alert('em desenvolvimento')} />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {isLoading ? (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : (
+          <>
+            {filteredAlunos.map((aluno) => (
+              <AlunoCard
+                key={aluno.id}
+                aluno={aluno}
+                onDelete={() => alert("em desenvolvimento")}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 }
