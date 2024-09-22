@@ -25,7 +25,7 @@ const HomePage = () => {
     <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-12">
       <h1 className="text-3xl font-bold mt-1 mb-1 p-1">
         Olá,{" "}
-        <span className="text-cyan-500">
+        <span className="text-cyan-500 mr-1">
           {loading ? <SkeletonName /> : user ? user.displayName || "Usuário" : "Visitante"}
         </span>
         !
