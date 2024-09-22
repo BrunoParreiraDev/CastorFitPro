@@ -10,7 +10,7 @@ import {
   updateProfile,
   updatePassword,
 } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, storage, db } from "@/lib/server/firebase";
 
@@ -200,6 +200,17 @@ export const getStudentById = async (id: string) => {
   } catch (error: any) {
     console.error("Erro ao buscar aluno:", error.message);
     return { student: null, error: error.message };
+  }
+};
+
+export const excluirAluno = async (id: string) => {
+  try {
+    const alunoRef = doc(db, "alunos", id);
+    await deleteDoc(alunoRef);
+    return { success: true, error: null };
+  } catch (error: any) {
+    console.error("Erro ao excluir aluno:", error.message);
+    return { success: false, error: error.message };
   }
 };
 

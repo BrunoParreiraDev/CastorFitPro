@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
-import { listStudents } from "@/lib/actions/user.actions";
+import { excluirAluno, listStudents } from "@/lib/actions/user.actions";
 import { useRouter } from "next/navigation";
 import AlunoCard from "@/components/AlunoCard";
 import { SkeletonCard } from "@/components/SkeletonCard";
@@ -42,6 +41,24 @@ export default function AlunosPage() {
 
     fetchAlunos();
   }, [toast]);
+
+  const handleDeleteAluno = async (id: string) => {
+    const { success, error } = await excluirAluno(id);
+    if (success) {
+      toast({
+        title: "Sucesso",
+        description: "Aluno excluído com sucesso.",
+      });
+      // Atualiza a lista de alunos após a exclusão
+      setAlunos(alunos.filter(aluno => aluno.id !== id));
+    } else {
+      toast({
+        title: "Erro",
+        description: "Não foi possível excluir o aluno.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const filteredAlunos = alunos.filter((aluno) =>
     aluno.nome.toLowerCase().includes(searchTerm.toLowerCase())
@@ -80,7 +97,7 @@ export default function AlunosPage() {
               <AlunoCard
                 key={aluno.id}
                 aluno={aluno}
-                onDelete={() => alert("em desenvolvimento")}
+                onDelete={() => handleDeleteAluno(aluno.id)}
               />
             ))}
           </>
