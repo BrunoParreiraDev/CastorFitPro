@@ -5,28 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { excluirAluno, listStudents } from "@/lib/actions/user.actions";
+import { excluirAluno, listAlunos } from "@/lib/actions/student.actions";
 import { useRouter } from "next/navigation";
 import AlunoCard from "@/components/AlunoCard";
 import { SkeletonCard } from "@/components/SkeletonCard";
+import { AlunoData } from "@/types";
 
-interface Aluno {
-  id: string;
-  nome: string;
-  telefone: string;
-  email: string;
-}
 
 export default function AlunosPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [alunos, setAlunos] = useState<Aluno[]>([]);
+  const [alunos, setAlunos] = useState<AlunoData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
     const fetchAlunos = async () => {
-      const { alunos, error } = await listStudents();
+      const { alunos, error } = await listAlunos();
       if (error) {
         toast({
           title: "Erro",
@@ -34,7 +29,7 @@ export default function AlunosPage() {
           variant: "destructive",
         });
       } else {
-        setAlunos(alunos as Aluno[]);
+        setAlunos(alunos as AlunoData[]);
       }
       setIsLoading(false);
     };

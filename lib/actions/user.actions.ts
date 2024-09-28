@@ -10,9 +10,8 @@ import {
   updateProfile,
   updatePassword,
 } from "firebase/auth";
-import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { auth, storage, db } from "@/lib/server/firebase";
+import { auth, storage } from "@/lib/server/firebase";
 
 import { v4 as uuidv4 } from "uuid";
 import { RegisterData, AuthData } from "@/types";
@@ -116,101 +115,6 @@ export const updateUserData = async ({
   } catch (error: any) {
     console.error("Erro ao atualizar os dados do usuário:", error.message);
     return { user: null, error: error.message };
-  }
-};
-
-export const registerStudent = async (alunoData: {
-  nome: string;
-  email: string;
-  telefone: string;
-  endereco?: string;
-}) => {
-  try {
-    const alunoRef = doc(db, "alunos");
-    await setDoc(alunoRef, {
-      nome: alunoData.nome,
-      email: alunoData.email,
-      telefone: alunoData.telefone,
-      endereco: alunoData.endereco || "",
-      dataCadastro: new Date(),
-    });
-
-    return { success: true, error: null };
-  } catch (error: any) {
-    console.error("Erro ao cadastrar aluno:", error.message);
-    return { success: false, error: error.message };
-  }
-};
-
-export const listStudents = async () => {
-  try {
-    const alunosRef = collection(db, "alunos");
-    const alunosSnapshot = await getDocs(alunosRef);
-    const alunosList = alunosSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-    return { alunos: alunosList, error: null };
-  } catch (error: any) {
-    console.error("Erro ao listar alunos:", error.message);
-    return { alunos: [], error: error.message };
-  }
-};
-
-export const updateStudent = async (studentData: {
-  id: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  endereco?: string;
-  altura?: number;
-  peso?: number;
-  // Adicione outros campos físicos conforme necessário
-}) => {
-  try {
-    const studentRef = doc(db, "alunos", studentData.id);
-    await setDoc(studentRef, {
-      nome: studentData.nome,
-      email: studentData.email,
-      telefone: studentData.telefone,
-      endereco: studentData.endereco || "",
-      altura: studentData.altura || null,
-      peso: studentData.peso || null,
-      // Adicione outros campos físicos conforme necessário
-      dataAtualizacao: new Date(),
-    }, { merge: true });
-
-    return { success: true, error: null };
-  } catch (error: any) {
-    console.error("Erro ao atualizar aluno:", error.message);
-    return { success: false, error: error.message };
-  }
-};
-
-export const getStudentById = async (id: string) => {
-  try {
-    const studentRef = doc(db, "alunos", id);
-    const studentSnap = await getDoc(studentRef);
-    
-    if (studentSnap.exists()) {
-      return { student: { id: studentSnap.id, ...studentSnap.data() }, error: null };
-    } else {
-      return { student: null, error: "Aluno não encontrado" };
-    }
-  } catch (error: any) {
-    console.error("Erro ao buscar aluno:", error.message);
-    return { student: null, error: error.message };
-  }
-};
-
-export const excluirAluno = async (id: string) => {
-  try {
-    const alunoRef = doc(db, "alunos", id);
-    await deleteDoc(alunoRef);
-    return { success: true, error: null };
-  } catch (error: any) {
-    console.error("Erro ao excluir aluno:", error.message);
-    return { success: false, error: error.message };
   }
 };
 

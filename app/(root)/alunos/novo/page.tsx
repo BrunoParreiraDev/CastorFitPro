@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import RegisterUserForm from "@/components/RegisterUserForm";
 import { useToast } from "@/components/ui/use-toast";
-import { registerStudent } from "@/lib/actions/user.actions";
+import { registerAluno } from "@/lib/actions/student.actions";
 
 import { CircleAlert } from "lucide-react";
 
@@ -27,8 +27,7 @@ const AlunosPage = () => {
       // Aqui você pode implementar a lógica para enviar os dados para o servidor
       console.log("Dados do formulário:", data);
 
-      // Simulando uma chamada assíncrona
-      await registerStudent(data);
+      await registerAluno(data);
 
       toast({
         title: "Sucesso!",

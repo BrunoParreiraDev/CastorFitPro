@@ -1,17 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Treino } from "@/types"
+import { useState, useEffect } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TreinoData } from "@/types";
+import { toast } from "@/components/ui/use-toast";
+import { excluirTreino } from "@/lib/actions/train.actions";
 
 export default function ListaTreinos() {
-  const [treinos, setTreinos] = useState<Treino[]>([])
-  const [pesquisa, setPesquisa] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
+  const [treinos, setTreinos] = useState<TreinoData[]>([]);
+  const [pesquisa, setPesquisa] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleDeleteTreino = async (id: string) => {
+    const { success, error } = await excluirTreino(id);
+    if (success) {
+      toast({
+        title: "Sucesso",
+        description: "Treino excluído com sucesso.",
+      });
+      // Atualiza a lista de treinos após a exclusão
+      setTreinos(treinos.filter(treino => treino.id !== id));
+    } else {
+      toast({
+        title: "Erro",
+        description: "Não foi possível excluir o Treino.",
+        variant: "destructive",
+      });
+    }
+  };
 
   useEffect(() => {
     // Simula o carregamento dos treinos
@@ -22,8 +42,16 @@ export default function ListaTreinos() {
           nome: "Treino A",
           diaSemana: "Segunda",
           exercicios: [
-            { nome: "Supino", descricao: "3x10", videoUrl: "https://example.com/supino" },
-            { nome: "Agachamento", descricao: "3x12", videoUrl: "https://example.com/agachamento" },
+            {
+              nome: "Supino",
+              descricao: "3x10",
+              videoUrl: "https://example.com/supino",
+            },
+            {
+              nome: "Agachamento",
+              descricao: "3x12",
+              videoUrl: "https://example.com/agachamento",
+            },
           ],
         },
         {
@@ -31,18 +59,26 @@ export default function ListaTreinos() {
           nome: "Treino B",
           diaSemana: "Quarta",
           exercicios: [
-            { nome: "Remada", descricao: "3x10", videoUrl: "https://example.com/remada" },
-            { nome: "Leg Press", descricao: "3x15", videoUrl: "https://example.com/legpress" },
+            {
+              nome: "Remada",
+              descricao: "3x10",
+              videoUrl: "https://example.com/remada",
+            },
+            {
+              nome: "Leg Press",
+              descricao: "3x15",
+              videoUrl: "https://example.com/legpress",
+            },
           ],
         },
-      ])
-      setIsLoading(false)
-    }, 1500)
-  }, [])
+      ]);
+      setIsLoading(false);
+    }, 1500);
+  }, []);
 
   const treinosFiltrados = treinos.filter((treino) =>
     treino.nome.toLowerCase().includes(pesquisa.toLowerCase())
-  )
+  );
 
   return (
     <div className="container mx-auto p-4">
@@ -82,7 +118,9 @@ export default function ListaTreinos() {
               <Card key={treino.id} className="w-full">
                 <CardContent className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{treino.nome}</h3>
-                  <p className="text-sm text-gray-500 mb-4">{treino.diaSemana}</p>
+                  <p className="text-sm text-gray-500 mb-4">
+                    {treino.diaSemana}
+                  </p>
                   <div className="space-y-2">
                     {treino.exercicios.map((exercicio, index) => (
                       <p key={index} className="text-sm">
@@ -90,16 +128,26 @@ export default function ListaTreinos() {
                       </p>
                     ))}
                   </div>
-                  <div className="mt-4 flex justify-end space-x-2">
-                    <Button variant="outline" asChild>
-                      <Link href={`/treinos/${treino.id}`}>Editar</Link>
-                    </Button>
-                    <Button variant="destructive">Excluir</Button>
+                  <div className="mt-4 grid grid-cols-2 gap-2">
+                    <div className="col-span-1">
+                      <Button variant="outline" asChild className="w-full">
+                        <Link href={`/treinos/editar/${treino.id}`}>Editar</Link>
+                      </Button>
+                    </div>
+                    <div className="col-span-1">
+                      <Button
+                        variant="destructive"
+                        onClick={() => handleDeleteTreino(treino.id)}
+                        className="w-full"
+                      >
+                        Excluir
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
             ))}
       </div>
     </div>
-  )
+  );
 }

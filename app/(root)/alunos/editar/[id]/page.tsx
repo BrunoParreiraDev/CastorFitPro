@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { updateStudent, getStudentById } from "@/lib/actions/user.actions";
+import { updateAluno, getAlunoById } from "@/lib/actions/student.actions";
 import { useParams } from "next/navigation";
 import EditUserForm from "@/components/EditUserForm";
 import {
@@ -15,25 +15,20 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert } from "lucide-react";
-
-interface StudentData {
-  id: string;
-  nome: string;
-  // Add other student properties here
-}
+import { AlunoData } from "@/types";
 
 const AlunosEditPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [studentData, setStudentData] = useState<StudentData | null>(null);
+  const [alunoData, setAlunoData] = useState<AlunoData | null>(null);
   const { toast } = useToast();
   const params = useParams();
   const id = params.id as string;
 
   useEffect(() => {
-    const fetchStudentData = async () => {
-      const { student, error } = await getStudentById(id);
-      if (student) {
-        setStudentData(student as StudentData);
+    const fetchAlunoData = async () => {
+      const { aluno, error } = await getAlunoById(id);
+      if (aluno) {
+        setAlunoData(aluno as AlunoData);
       } else {
         toast({
           title: "Erro!",
@@ -43,17 +38,20 @@ const AlunosEditPage = () => {
       }
     };
 
-    fetchStudentData();
-  }, [id, toast]);
+    fetchAlunoData();
+  }, [id]);
 
-  const handleSubmit = async (data: StudentData) => {
+  const handleSubmit = async (data: AlunoData) => {
     setIsLoading(true);
     try {
-      const result = await updateStudent({
+      const result = await updateAluno({
         ...data,
         id,
-        email: "",
-        telefone: "",
+        email: data.email,
+        telefone: data.telefone,
+        endereco: data.endereco,
+        altura: data.altura,
+        peso: data.peso
       });
 
       if (result.success) {
@@ -94,11 +92,11 @@ const AlunosEditPage = () => {
           </div>
         </CardHeader>
         <CardContent className="p-5">
-          {studentData && (
+          {alunoData && (
             <EditUserForm
               onSubmit={handleSubmit}
               isLoading={isLoading}
-              initialData={studentData}
+              initialData={alunoData}
             />
           )}
         </CardContent>

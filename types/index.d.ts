@@ -38,7 +38,7 @@ export interface User {
   photoURL?: string;
 }
 
-export interface Treino {
+export interface TreinoData {
   id: string
   nome: string
   diaSemana: string
@@ -47,4 +47,14 @@ export interface Treino {
     descricao: string
     videoUrl: string
   }[]
+}
+
+interface AlunoData {
+  id: string;
+  nome: string;
+  telefone: string;
+  email: string;
+  endereco: string;
+  altura: number;
+  peso: number;
 }

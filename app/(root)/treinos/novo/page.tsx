@@ -1,35 +1,65 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
+// TODO - Componenntizar o card
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { registerTreino } from "@/lib/actions/train.actions";
+import { toast } from "@/components/ui/use-toast";
 
 export default function NovoTreino() {
-  const router = useRouter()
-  const [nome, setNome] = useState("")
-  const [diaSemana, setDiaSemana] = useState("")
-  const [exercicios, setExercicios] = useState([{ nome: "", descricao: "", videoUrl: "" }])
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [nome, setNome] = useState("");
+  const [setDiaSemana] = useState("");
+  const [exercicios, setExercicios] = useState([
+    { nome: "", descricao: "", videoUrl: "" },
+  ]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Aqui você implementaria a lógica para salvar o novo treino
-    console.log({ nome, diaSemana, exercicios })
-    router.push("/treinos")
-  }
+  const handleSubmit = async (data: any) => {
+    setIsLoading(true);
+    try {
+      // Aqui você pode implementar a lógica para enviar os dados para o servidor
+      console.log("Dados do formulário:", data);
+
+      await registerTreino(data);
+
+      toast({
+        title: "Sucesso!",
+        description: `Treino ${data.name} cadastrado com sucesso!`,
+      });
+    } catch (error) {
+      console.error("Erro ao cadastrar Treino:", error);
+      toast({
+        title: "Erro!",
+        description: "Ocorreu um erro ao cadastrar o Treino. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const addExercicio = () => {
-    setExercicios([...exercicios, { nome: "", descricao: "", videoUrl: "" }])
-  }
+    setExercicios([...exercicios, { nome: "", descricao: "", videoUrl: "" }]);
+  };
 
   const updateExercicio = (index: number, field: string, value: string) => {
-    const newExercicios = [...exercicios]
-    newExercicios[index] = { ...newExercicios[index], [field]: value }
-    setExercicios(newExercicios)
-  }
+    const newExercicios = [...exercicios];
+    newExercicios[index] = { ...newExercicios[index], [field]: value };
+    setExercicios(newExercicios);
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -45,18 +75,24 @@ export default function NovoTreino() {
               onChange={(e) => setNome(e.target.value)}
               required
             />
-            <Select onValueChange={setDiaSemana} required>
+            <Select onValueChange={() => setDiaSemana} required>
               <SelectTrigger>
                 <SelectValue placeholder="Dia da Semana" />
               </SelectTrigger>
               <SelectContent>
-                {["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"].map(
-                  (dia) => (
-                    <SelectItem key={dia} value={dia}>
-                      {dia}
-                    </SelectItem>
-                  )
-                )}
+                {[
+                  "Segunda",
+                  "Terça",
+                  "Quarta",
+                  "Quinta",
+                  "Sexta",
+                  "Sábado",
+                  "Domingo",
+                ].map((dia) => (
+                  <SelectItem key={dia} value={dia}>
+                    {dia}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             {exercicios.map((exercicio, index) => (
@@ -64,19 +100,25 @@ export default function NovoTreino() {
                 <Input
                   placeholder="Nome do Exercício"
                   value={exercicio.nome}
-                  onChange={(e) => updateExercicio(index, "nome", e.target.value)}
+                  onChange={(e) =>
+                    updateExercicio(index, "nome", e.target.value)
+                  }
                   required
                 />
                 <Textarea
                   placeholder="Descrição"
                   value={exercicio.descricao}
-                  onChange={(e) => updateExercicio(index, "descricao", e.target.value)}
+                  onChange={(e) =>
+                    updateExercicio(index, "descricao", e.target.value)
+                  }
                   required
                 />
                 <Input
                   placeholder="URL do Vídeo"
                   value={exercicio.videoUrl}
-                  onChange={(e) => updateExercicio(index, "videoUrl", e.target.value)}
+                  onChange={(e) =>
+                    updateExercicio(index, "videoUrl", e.target.value)
+                  }
                 />
               </div>
             ))}
@@ -84,7 +126,11 @@ export default function NovoTreino() {
               Adicionar Exercício
             </Button>
             <div className="flex justify-end space-x-2">
-              <Button type="button" variant="outline" onClick={() => router.push("/treinos")}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.push("/treinos")}
+              >
                 Cancelar
               </Button>
               <Button type="submit">Salvar Treino</Button>
@@ -93,5 +139,5 @@ export default function NovoTreino() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
