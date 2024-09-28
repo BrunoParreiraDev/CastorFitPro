@@ -37,3 +37,14 @@ export interface User {
   displayName?: string;
   photoURL?: string;
 }
+
+export interface Treino {
+  id: string
+  nome: string
+  diaSemana: string
+  exercicios: {
+    nome: string
+    descricao: string
+    videoUrl: string
+  }[]
+}
