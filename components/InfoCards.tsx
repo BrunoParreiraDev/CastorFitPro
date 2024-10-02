@@ -10,6 +10,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Button } from "./ui/button";
 import { formatToBRL } from "@/lib/utils";
+import { toast } from "./ui/use-toast";
 
 const InfoCards = () => {
   const weekEarns = 1439;
@@ -17,6 +18,20 @@ const InfoCards = () => {
 
   const monthEarns = 6829.54;
   const monthProgress = 68;
+
+  const handleClickTreinos = async () => {
+    
+    try {
+      window.location.href = "/treinos";
+    } catch (error) {
+      console.error("Erro inesperado:", error);
+      toast({
+        title: "Erro",
+        description: "Erro inesperado. Tente novamente.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
@@ -29,7 +44,7 @@ const InfoCards = () => {
           </CardDescription>
         </CardHeader>
         <CardFooter>
-          <Button>Gerenciar Treinos</Button>
+          <Button onClick={handleClickTreinos}>Gerenciar Treinos</Button>
         </CardFooter>
       </Card>
       <Card x-chunk="dashboard-05-chunk-1">

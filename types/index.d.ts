@@ -1,3 +1,5 @@
+// TODO: separar interfaces por Categoria em arquivos (categoria).d.ts diferentes
+
 import { SubmitHandler } from 'react-hook-form';
 
 export interface RegisterData {
@@ -38,15 +40,23 @@ export interface User {
   photoURL?: string;
 }
 
-export interface TreinoData {
-  id: string
-  nome: string
-  diaSemana: string
-  exercicios: {
-    nome: string
-    descricao: string
-    videoUrl: string
-  }[]
+
+interface Exercicio {
+  nome: string;
+  descricao: string;
+  videoUrl: string;
+}
+
+interface TreinoData {
+  id: string;
+  nome: string;
+  diaSemana: string;
+  exercicios: Exercicio[];
+}
+
+interface TreinoCardProps {
+  treino: Treino;
+  onDelete: (id: string) => void;
 }
 
 interface AlunoData {
@@ -57,4 +67,14 @@ interface AlunoData {
   endereco: string;
   altura: number;
   peso: number;
+}
+
+interface AlunoCardProps {
+  aluno: {
+    id: string;
+    nome: string;
+    telefone: string;
+    email: string;
+  };
+  onDelete: (id: string) => void;
 }

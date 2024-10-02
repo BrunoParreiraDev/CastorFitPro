@@ -3,16 +3,9 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { AlunoCardProps } from '@/types';
 
-interface AlunoCardProps {
-  aluno: {
-    id: string;
-    nome: string;
-    telefone: string;
-    email: string;
-  };
-  onDelete: (id: string) => void;
-}
+
 
 const AlunoCard: React.FC<AlunoCardProps> = ({ aluno, onDelete }) => {
   const router = useRouter();

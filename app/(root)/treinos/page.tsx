@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TreinoData } from "@/types";
 import { toast } from "@/components/ui/use-toast";
 import { excluirTreino } from "@/lib/actions/train.actions";
+import TreinoCard from "@/components/TreinoCard";
+import { TreinoData } from "@/types";
 
 export default function ListaTreinos() {
   const [treinos, setTreinos] = useState<TreinoData[]>([]);
@@ -22,7 +23,6 @@ export default function ListaTreinos() {
         title: "Sucesso",
         description: "Treino excluído com sucesso.",
       });
-      // Atualiza a lista de treinos após a exclusão
       setTreinos(treinos.filter(treino => treino.id !== id));
     } else {
       toast({
@@ -34,7 +34,6 @@ export default function ListaTreinos() {
   };
 
   useEffect(() => {
-    // Simula o carregamento dos treinos
     setTimeout(() => {
       setTreinos([
         {
@@ -42,16 +41,8 @@ export default function ListaTreinos() {
           nome: "Treino A",
           diaSemana: "Segunda",
           exercicios: [
-            {
-              nome: "Supino",
-              descricao: "3x10",
-              videoUrl: "https://example.com/supino",
-            },
-            {
-              nome: "Agachamento",
-              descricao: "3x12",
-              videoUrl: "https://example.com/agachamento",
-            },
+            { nome: "Supino", descricao: "3x10", videoUrl: "https://example.com/supino" },
+            { nome: "Agachamento", descricao: "3x12", videoUrl: "https://example.com/agachamento" },
           ],
         },
         {
@@ -59,16 +50,8 @@ export default function ListaTreinos() {
           nome: "Treino B",
           diaSemana: "Quarta",
           exercicios: [
-            {
-              nome: "Remada",
-              descricao: "3x10",
-              videoUrl: "https://example.com/remada",
-            },
-            {
-              nome: "Leg Press",
-              descricao: "3x15",
-              videoUrl: "https://example.com/legpress",
-            },
+            { nome: "Remada", descricao: "3x10", videoUrl: "https://example.com/remada" },
+            { nome: "Leg Press", descricao: "3x15", videoUrl: "https://example.com/legpress" },
           ],
         },
       ]);
@@ -92,7 +75,7 @@ export default function ListaTreinos() {
               onChange={(e) => setPesquisa(e.target.value)}
             />
             <Button className="w-1/4" asChild>
-              <Link href="/treinos/novo">Novo</Link>
+              <Link className="text-white" href="/treinos/novo">Novo</Link>
             </Button>
           </div>
         </CardContent>
@@ -115,37 +98,11 @@ export default function ListaTreinos() {
                 </Card>
               ))
           : treinosFiltrados.map((treino) => (
-              <Card key={treino.id} className="w-full">
-                <CardContent className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{treino.nome}</h3>
-                  <p className="text-sm text-gray-500 mb-4">
-                    {treino.diaSemana}
-                  </p>
-                  <div className="space-y-2">
-                    {treino.exercicios.map((exercicio, index) => (
-                      <p key={index} className="text-sm">
-                        {exercicio.nome} - {exercicio.descricao}
-                      </p>
-                    ))}
-                  </div>
-                  <div className="mt-4 grid grid-cols-2 gap-2">
-                    <div className="col-span-1">
-                      <Button variant="outline" asChild className="w-full">
-                        <Link href={`/treinos/editar/${treino.id}`}>Editar</Link>
-                      </Button>
-                    </div>
-                    <div className="col-span-1">
-                      <Button
-                        variant="destructive"
-                        onClick={() => handleDeleteTreino(treino.id)}
-                        className="w-full"
-                      >
-                        Excluir
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <TreinoCard
+                key={treino.id}
+                treino={treino}
+                onDelete={handleDeleteTreino}
+              />
             ))}
       </div>
     </div>
