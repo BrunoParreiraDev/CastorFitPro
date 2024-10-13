@@ -1,6 +1,6 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../server/firebase";
-import { AlunoData } from "@/types";
+import { AlunoData } from "@/types/student";
 
 export const registerAluno = async (alunoData: AlunoData) => {
     try {

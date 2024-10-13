@@ -1,9 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 
-const loginSchema = Yup.object({
+// Definição do esquema de validação
+export const loginSchema = Yup.object({
   email: Yup.string()
     .email("Por favor, digite um email válido.")
     .required("Por favor, preencha este campo"),
@@ -12,7 +12,8 @@ const loginSchema = Yup.object({
     .required("Por favor, preencha este campo"),
 });
 
-export const loginValidation = () =>
+// Use isso diretamente no componente onde o formulário é utilizado
+export const useLoginValidation = () =>
   useForm({
     resolver: yupResolver(loginSchema),
   });

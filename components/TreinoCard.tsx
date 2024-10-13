@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TreinoData } from "@/types";
+import { TreinoData } from "@/types/training";
 
 interface TreinoCardProps {
   treino: TreinoData;

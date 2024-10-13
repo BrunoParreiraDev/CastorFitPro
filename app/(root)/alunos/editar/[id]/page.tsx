@@ -15,7 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert } from "lucide-react";
-import { AlunoData } from "@/types";
+import { AlunoData } from "@/types/student";
 
 const AlunosEditPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,7 @@ const AlunosEditPage = () => {
     };
 
     fetchAlunoData();
-  }, [id]);
+  }, [id, toast]);
 
   const handleSubmit = async (data: AlunoData) => {
     setIsLoading(true);
@@ -51,7 +51,7 @@ const AlunosEditPage = () => {
         telefone: data.telefone,
         endereco: data.endereco,
         altura: data.altura,
-        peso: data.peso
+        peso: data.peso,
       });
 
       if (result.success) {

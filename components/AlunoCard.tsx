@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { AlunoCardProps } from '@/types';
+import { AlunoCardProps } from '@/types/student';
 
 
 

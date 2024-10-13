@@ -14,7 +14,8 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, storage } from "@/lib/server/firebase";
 
 import { v4 as uuidv4 } from "uuid";
-import { RegisterData, AuthData } from "@/types";
+import { AuthData } from "@/types/auth";
+import { RegisterData } from "@/types/form";
 
 const DEFAULT_PROFILE_IMAGE = "/users/default-profile.jpg";
 

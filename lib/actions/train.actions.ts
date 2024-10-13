@@ -1,6 +1,6 @@
 import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../server/firebase";
-import { TreinoData } from "@/types";
+import { TreinoData } from "@/types/training";
 
 export const registerTreino = async (treinoData: TreinoData) => {
     try {

@@ -135,7 +135,7 @@ export default function PerfilPage() {
                 <p className="text-sm text-destructive">{String(errors.name.message)}</p>
               )}
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button type="submit" className="w-full text-light" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

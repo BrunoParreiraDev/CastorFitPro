@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Dumbbell, Home, LineChart, Settings, Users2 } from "lucide-react";

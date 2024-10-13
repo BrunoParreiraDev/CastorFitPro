@@ -9,7 +9,7 @@ import { excluirAluno, listAlunos } from "@/lib/actions/student.actions";
 import { useRouter } from "next/navigation";
 import AlunoCard from "@/components/AlunoCard";
 import { SkeletonCard } from "@/components/SkeletonCard";
-import { AlunoData } from "@/types";
+import { AlunoData } from "@/types/student";
 
 
 export default function AlunosPage() {

@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "@/components/ui/use-toast";
 import { excluirTreino } from "@/lib/actions/train.actions";
 import TreinoCard from "@/components/TreinoCard";
-import { TreinoData } from "@/types";
+import { TreinoData } from "@/types/training";
 
 export default function ListaTreinos() {
   const [treinos, setTreinos] = useState<TreinoData[]>([]);

@@ -1,6 +1,6 @@
 // src/components/FormInput.tsx
 import { Input } from "@/components/ui/input";
-import { FormInputProps } from "@/types";
+import { FormInputProps } from "@/types/form";
 import React from "react";
 
 import {

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { getTreinoById } from "@/lib/actions/train.actions"
-import { TreinoData } from "@/types"
+import { TreinoData } from "@/types/training"
 import { toast } from "@/components/ui/use-toast"
 
 export default function EditarTreino() {
