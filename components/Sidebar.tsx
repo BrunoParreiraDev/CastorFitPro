@@ -1,93 +1,71 @@
-import React from "react";
+"use client"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Dumbbell, Home, LineChart, Settings, Users2 } from "lucide-react";
+import React from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Dumbbell, Home, LineChart, Settings, Users2 } from "lucide-react"
+import { SkeletonLogo } from "./SkeletonLogo"
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
-import Link from "next/link";
-import { SkeletonLogo } from "./SkeletonLogo";
+const navItems = [
+  { href: "/", icon: Home, label: "Início" },
+  { href: "/treinos", icon: Dumbbell, label: "Treinos" },
+  { href: "/alunos", icon: Users2, label: "Alunos" },
+  { href: "/relatorio", icon: LineChart, label: "Relatório" },
+]
 
 const Sidebar = () => {
+  const pathname = usePathname()
+
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+      <nav className="flex flex-col items-center gap-4 px-2 py-5">
         <Link
           href="/"
-          className="group flex h-10 w-10 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+          className="group flex h-10 w-10 items-center justify-center rounded-full bg-primary text-lg font-semibold text-primary-foreground transition-transform hover:scale-110"
         >
           <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
-            <Avatar className="hover:scale-125 transition-all">
-              <AvatarImage src="/logo.png" />
+            <Avatar>
+              <AvatarImage src="/logo.png" alt="CastorFit Pro logo" />
               <AvatarFallback><SkeletonLogo /></AvatarFallback>
             </Avatar>
-            <span className="sr-only">CastorFit Pro</span>
           </div>
+          <span className="sr-only">CastorFit Pro</span>
         </Link>
 
         <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Home className="h-5 w-5" />
-                <span className="sr-only">Início</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Início</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/treinos"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Dumbbell className="h-5 w-5" />
-                <span className="sr-only">Treinos</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Treinos</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/alunos"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <Users2 className="h-5 w-5" />
-                <span className="sr-only">Alunos</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Alunos</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/relatorio"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
-              >
-                <LineChart className="h-5 w-5" />
-                <span className="sr-only">Relatório</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Relatório</TooltipContent>
-          </Tooltip>
+          {navItems.map((item) => (
+            <Tooltip key={item.href}>
+              <TooltipTrigger asChild>
+                <Link
+                  href={item.href}
+                  className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-secondary md:h-8 md:w-8 ${
+                    pathname === item.href
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="h-5 w-5" />
+                  <span className="sr-only">{item.label}</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">{item.label}</TooltipContent>
+            </Tooltip>
+          ))}
         </TooltipProvider>
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+      <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-5">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
                 href="/config"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={`flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-secondary md:h-8 md:w-8 ${
+                  pathname === "/config"
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Configurações</span>
@@ -98,7 +76,7 @@ const Sidebar = () => {
         </TooltipProvider>
       </nav>
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

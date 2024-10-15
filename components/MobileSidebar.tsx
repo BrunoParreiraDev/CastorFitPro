@@ -1,13 +1,29 @@
-import Link from "next/link";
-import React from "react";
+"use client"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import {
+  Home,
+  LineChart,
+  PanelLeft,
+  Users2,
+  Dumbbell,
+  Settings,
+} from "lucide-react"
 
-import { Home, LineChart, PanelLeft, Users2, Dumbbell } from "lucide-react";
+const navItems = [
+  { href: "/", icon: Home, label: "Dashboard" },
+  { href: "/treinos", icon: Dumbbell, label: "Treinos" },
+  { href: "/alunos", icon: Users2, label: "Alunos" },
+  { href: "/relatorio", icon: LineChart, label: "Relatório" },
+]
 
 const MobileSidebar = () => {
+  const pathname = usePathname()
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -16,55 +32,55 @@ const MobileSidebar = () => {
           <span className="sr-only">Ativar Sidebar</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="sm:max-w-xs" >
-        <nav className="grid gap-6 text-lg font-medium">
-          <div className="flex items-center">
+      <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+        <nav className="flex flex-col h-full">
+          <div className="flex items-center mb-6">
             <Link
               href="/"
-              className="group flex h-10 w-10 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
+              className="flex items-center gap-2 rounded-full bg-primary p-1 text-primary-foreground"
             >
-              <div className="relative h-full w-full rounded-full overflow-hidden shadow-sm">
-                <Avatar className="hover:scale-125 transition-all">
-                  <AvatarImage src="/logo.png" />
-                  <AvatarFallback>HC</AvatarFallback>
-                </Avatar>
-              </div>
+              <Avatar className="h-8 w-8 transition-transform hover:scale-110">
+                <AvatarImage src="/logo.png" alt="CastorFit Pro logo" />
+                <AvatarFallback>CF</AvatarFallback>
+              </Avatar>
             </Link>
-            <span className="ml-4 font-bold">CastorFit Pro</span>
+            <span className="ml-4 text-lg font-bold">CastorFit Pro</span>
           </div>
 
-          <Link
-            href="/"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
-          >
-            <Home className="h-5 w-5" />
-            Dashboard
-          </Link>
-          <Link
-            href="/treinos"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
-          >
-            <Dumbbell className="h-5 w-5" />
-            Treinos
-          </Link>
-          <Link
-            href="/alunos"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
-          >
-            <Users2 className="h-5 w-5" />
-            Alunos
-          </Link>
-          <Link
-            href="/config"
-            className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground hover:scale-105 transition-all"
-          >
-            <LineChart className="h-5 w-5" />
-            Configurações
-          </Link>
+          <div className="space-y-4 flex-grow">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center gap-4 px-2.5 py-2 rounded-md transition-colors ${
+                  pathname === item.href
+                    ? "bg-secondary text-secondary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                }`}
+              >
+                <item.icon className="h-5 w-5" />
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-auto pb-6">
+            <Link
+              href="/config"
+              className={`flex items-center gap-4 px-2.5 py-2 rounded-md transition-colors ${
+                pathname === "/config"
+                  ? "bg-secondary text-secondary-foreground"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              }`}
+            >
+              <Settings className="h-5 w-5" />
+              Configurações
+            </Link>
+          </div>
         </nav>
       </SheetContent>
     </Sheet>
-  );
-};
+  )
+}
 
-export default MobileSidebar;
+export default MobileSidebar
