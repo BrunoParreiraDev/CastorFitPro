@@ -15,7 +15,9 @@ const AlunoCard: React.FC<AlunoCardProps> = ({ aluno, onDelete }) => {
   };
 
   const handleDelete = () => {
-    onDelete(aluno.id);
+    if (aluno.id) {
+      onDelete(aluno.id);
+    }
   };
 
   return (

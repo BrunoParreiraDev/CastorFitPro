@@ -13,20 +13,9 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "../server/firebase";
+import { AlunoData } from "@/types/student";
 
-export interface AlunoData {
-  id?: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  dataNascimento: Date;
-  endereco?: string;
-  objetivo?: string;
-  altura?: number;
-  genero?: "masculino" | "feminino" | "outro";
-  peso?: number;
-  dataAtualizacao?: Date;
-}
+
 
 export const registerAluno = async (
   alunoData: Omit<AlunoData, "id">

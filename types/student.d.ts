@@ -1,21 +1,22 @@
-// types/student.d.ts
 
 export interface AlunoData {
-  id: string;
+  id: string; // Tornando id obrigatório
   nome: string;
-  telefone: string;
   email: string;
-  endereco: string;
-  objetivo: string;
-  genero: string;
-  dataNascimento: string;
-  altura: number;
-  peso: number;
+  telefone: string;
+  endereco?: string;
+  objetivo?: string;
+  altura?: number;
+  genero?: "masculino" | "feminino" | "outro";
+  peso?: number;
+  dataNascimento: Date;
+  dataAtualizacao?: Date;
 }
+
 
 export interface AlunoCardProps {
   aluno: {
-    id: string;
+    id: string | undefined; // Permite undefined
     nome: string;
     telefone: string;
     email: string;

@@ -28,15 +28,16 @@ const AlunosEditPage = () => {
     const fetchAlunoData = async () => {
       const { aluno, error } = await getAlunoById(id);
       if (aluno) {
-        setAlunoData(aluno as AlunoData);
+        setAlunoData(aluno as unknown as AlunoData);
       } else {
         toast({
           title: "Erro!",
-          description: error || "Não foi possível carregar os dados do aluno.",
+          description: error ?? "Não foi possível carregar os dados do aluno.", // Usando ?? para garantir que não seja null
           variant: "destructive",
         });
       }
     };
+    
 
     fetchAlunoData();
   }, [id, toast]);
@@ -45,24 +46,25 @@ const AlunosEditPage = () => {
     setIsLoading(true);
     try {
       const result = await updateAluno({
-        ...data,
-        objetivo: data.objetivo,
-        telefone: data.telefone,
-        endereco: data.endereco,
-        genero: data.genero,
+        objetivo: data.objetivo ?? "",
+        telefone: data.telefone ?? "", 
+        endereco: data.endereco ?? "",
+        genero: data.genero as "masculino" | "feminino" | "outro" | undefined, 
         altura: data.altura,
         email: data.email,
         peso: data.peso,
         id,
+        nome: data.nome ?? "", 
+        dataNascimento: new Date(data.dataNascimento),
       });
-
+  
       if (result.success) {
         toast({
           title: "Sucesso!",
           description: `Aluno ${data.nome} atualizado com sucesso!`,
         });
       } else {
-        throw new Error(result.error);
+        throw new Error(result.error ?? "Erro desconhecido");
       }
     } catch (error) {
       console.error("Erro ao atualizar aluno:", error);
@@ -75,6 +77,7 @@ const AlunosEditPage = () => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <>
