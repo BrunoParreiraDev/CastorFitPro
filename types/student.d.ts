@@ -6,6 +6,9 @@ export interface AlunoData {
   telefone: string;
   email: string;
   endereco: string;
+  objetivo: string;
+  genero: string;
+  dataNascimento: string;
   altura: number;
   peso: number;
 }

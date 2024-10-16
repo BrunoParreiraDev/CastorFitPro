@@ -16,23 +16,24 @@ import { registerAluno } from "@/lib/actions/student.actions";
 import { CircleAlert } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
 
 const AlunosPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-      // Aqui você pode implementar a lógica para enviar os dados para o servidor
-      console.log("Dados do formulário:", data);
-
       await registerAluno(data);
 
       toast({
         title: "Sucesso!",
-        description: `Aluno ${data.name} cadastrado com sucesso!`,
+        description: `Aluno ${data.nome} cadastrado com sucesso!`,
       });
+
+      router.push("/alunos");
     } catch (error) {
       console.error("Erro ao cadastrar aluno:", error);
       toast({
@@ -66,7 +67,7 @@ const AlunosPage = () => {
           <RegisterUserForm onSubmit={handleSubmit} isLoading={isLoading} />
         </CardContent>
       </Card>
-      
+
       <Alert className="mt-4">
         <CircleAlert className="h-4 w-4" />
         <AlertTitle>Importante</AlertTitle>

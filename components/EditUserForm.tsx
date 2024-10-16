@@ -12,17 +12,21 @@ interface EditUserFormProps {
   initialData?: any;
 }
 
-const EditUserForm: React.FC<EditUserFormProps> = ({ onSubmit, isLoading, initialData }) => {
+const EditUserForm: React.FC<EditUserFormProps> = ({
+  onSubmit,
+  isLoading,
+  initialData,
+}) => {
   const methods = useForm({
     defaultValues: {
-      nome: "",
-      email: "",
+      dataNascimento: "",
       telefone: "",
       endereco: "",
-      altura: "",
-      peso: "",
-      dataNascimento: "",
       genero: "",
+      altura: "",
+      email: "",
+      nome: "",
+      peso: "",
     },
   });
 
@@ -119,7 +123,10 @@ const EditUserForm: React.FC<EditUserFormProps> = ({ onSubmit, isLoading, initia
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
           <div className="col-span-1 sm:col-span-6">
             <Link href="/alunos" passHref>
-              <Button type="button" className="w-full text-light bg-yellow-500 hover:bg-yellow-600">
+              <Button
+                type="button"
+                className="w-full text-light bg-yellow-500 hover:bg-yellow-600"
+              >
                 Voltar
               </Button>
             </Link>

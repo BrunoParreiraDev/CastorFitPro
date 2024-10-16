@@ -46,12 +46,14 @@ const AlunosEditPage = () => {
     try {
       const result = await updateAluno({
         ...data,
-        id,
-        email: data.email,
+        objetivo: data.objetivo,
         telefone: data.telefone,
         endereco: data.endereco,
+        genero: data.genero,
         altura: data.altura,
+        email: data.email,
         peso: data.peso,
+        id,
       });
 
       if (result.success) {

@@ -6,9 +6,7 @@ export const registerTreino = async (treinoData: TreinoData) => {
     try {
       const treinoRef = doc(db, "treinos");
       await setDoc(treinoRef, {
-        nome: treinoData.nome,
-        diaSemana: treinoData.diaSemana,
-        exercicios: treinoData.exercicios
+        ...treinoData,
       });
   
       return { success: true, error: null };
@@ -37,9 +35,7 @@ export const registerTreino = async (treinoData: TreinoData) => {
     try {
       const treinoRef = doc(db, "treinos", treinoData.id);
       await setDoc(treinoRef, {
-        nome: treinoData.nome,
-        diaSemana: treinoData.diaSemana,
-        exercicios: treinoData.exercicios,
+        ...treinoData,
         dataAtualizacao: new Date(),
       }, { merge: true });
   

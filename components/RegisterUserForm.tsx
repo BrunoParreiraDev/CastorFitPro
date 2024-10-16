@@ -13,13 +13,14 @@ interface RegisterUserFormProps {
 const RegisterUserForm: React.FC<RegisterUserFormProps> = ({ onSubmit, isLoading }) => {
   const methods = useForm({
     defaultValues: {
-      nome: "",
-      email: "",
+      dataNascimento: "",
       telefone: "",
       endereco: "",
-      dataNascimento: "",
+      objetivo: "",
       genero: "",
       altura: "",
+      email: "",
+      nome: "",
       peso: "",
     },
   });
@@ -74,6 +75,17 @@ const RegisterUserForm: React.FC<RegisterUserFormProps> = ({ onSubmit, isLoading
               name="endereco"
               label="Endereço (*)"
               placeholder="Ex: Rua das Flores, 123"
+              isRequired={false}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
+          <div className="col-span-1 sm:col-span-12">
+            <FormInput
+              name="objetivo"
+              label="Objetivo (*)"
+              placeholder="Ex: Ganho de Massa"
               isRequired={false}
             />
           </div>
